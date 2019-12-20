@@ -1,6 +1,5 @@
 import React, { ReactChild } from "react";
-import { View } from "react-native";
-import { StatusBar } from "../styles/StatusBar";
+import { ScreenWrapper, ScreenRadiusBox } from "../styles/ScreenWrapper";
 
 interface Props {
   children: ReactChild;
@@ -8,10 +7,9 @@ interface Props {
 
 export const BasicScreen = (props: Props) => {
   return (
-    <View>
-      <StatusBar />
-      {props.children}
-    </View>
+    <ScreenWrapper>
+      <ScreenRadiusBox>{props.children}</ScreenRadiusBox>
+    </ScreenWrapper>
   );
 };
 
