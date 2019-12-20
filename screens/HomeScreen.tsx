@@ -1,12 +1,20 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
 import BasicScreen from "./BasicScreen";
+import { MyText } from "../styles/Text";
+import { NavigationProps } from "../types";
+import { PAST_FEEDS } from "./types";
 
-export const HomeScreen = () => {
+interface Props extends NavigationProps {}
+
+export const HomeScreen = (props: Props) => {
   return (
     <BasicScreen>
       <View>
-        <Text>Home</Text>
+        <MyText>Home Screen</MyText>
+        <TouchableOpacity onPress={() => props.navigation.navigate(PAST_FEEDS)}>
+          <MyText>History</MyText>
+        </TouchableOpacity>
       </View>
     </BasicScreen>
   );
