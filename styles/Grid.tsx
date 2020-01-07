@@ -25,6 +25,7 @@ export const Row = styled(Aligment)`
 export const RowColumn = styled(Aligment)`
   display: flex;
   flex-direction: column;
+  background: red;
 `;
 
 export const Col = styled(Aligment)`

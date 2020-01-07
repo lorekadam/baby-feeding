@@ -1,5 +1,7 @@
 export const colors = {
-  main: "#F4A8AC",
+  main: "#eaa1a5",
   darkText: "#313030",
-  white: "#FFFFFF"
+  white: "#FFFFFF",
+  breast: "#eaa1a5",
+  breastInside: "#db9020"
 };
