@@ -4,20 +4,17 @@ import BasicScreen from "./BasicScreen";
 import { MyText } from "../styles/Text";
 import { NavigationProps } from "../types";
 import { FEED_SCREEN } from "./types";
+import ChangeScreen from "../components/ChangeScreen";
 
 interface Props extends NavigationProps {}
 
 export const PastFeedsScreen = (props: Props) => {
   return (
     <BasicScreen>
-      <View>
-        <MyText>Past feeds</MyText>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(FEED_SCREEN)}
-        >
-          <MyText>Home</MyText>
-        </TouchableOpacity>
-      </View>
+      <ChangeScreen icon="home" screen={FEED_SCREEN} />
+      <MyText textAlign="center" bold fontSize={4}>
+        Past feeds
+      </MyText>
     </BasicScreen>
   );
 };

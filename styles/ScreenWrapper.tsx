@@ -17,3 +17,10 @@ export const ScreenRadiusBox = styled.View`
   padding: ${heightPtoDP(3)}px;
   border-radius: ${APP_RADIUS};
 `;
+
+export const ChangeScreenWrapper = styled.View`
+  position: absolute;
+  z-index: 1;
+  right: 8;
+  top: 6;
+`;

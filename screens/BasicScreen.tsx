@@ -1,8 +1,8 @@
-import React, { ReactChild } from "react";
+import React, { ReactNode } from "react";
 import { ScreenWrapper, ScreenRadiusBox } from "../styles/ScreenWrapper";
 
 interface Props {
-  children: ReactChild;
+  children: ReactNode;
 }
 
 export const BasicScreen = (props: Props) => {
