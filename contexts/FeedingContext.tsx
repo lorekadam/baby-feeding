@@ -1,21 +1,27 @@
 import React from "react";
+import { Feeding } from "../types";
 
 interface State {
   side: string | null;
-  feeding: [];
+  feeding: Feeding[];
   setSide?(side: string): void;
 }
 
 const initialState: State = {
   side: null,
-  feeding: []
+  feeding: [
+    {
+      side: "LEFT",
+      dateTime: "08.01.2020 16:48"
+    }
+  ]
 };
 
 const FeedingContext = React.createContext(initialState);
 const { Provider, Consumer } = FeedingContext;
 
 class FeedingProvider extends React.Component {
-  state = { ...initialState, side: "LEFT" };
+  state = initialState;
 
   setSide = (side: string) => {
     this.setState({ side });
