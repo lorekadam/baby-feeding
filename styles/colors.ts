@@ -3,5 +3,7 @@ export const colors = {
   darkText: "#313030",
   white: "#FFFFFF",
   breast: "#eaa1a5",
-  breastInside: "#db9020"
+  breastInside: "#db9020",
+  breastShadow: "#b27b7d",
+  breastInsideShadow: "#b27218"
 };

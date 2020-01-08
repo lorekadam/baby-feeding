@@ -10,14 +10,11 @@ const breastInsideWidth = breastWidth / 3.4;
 interface Props {
   rightSide?: boolean;
   scale?: boolean;
+  active?: boolean;
 }
 
 const countScale = (value: number, scale?: boolean) => {
   return scale ? value * BREAST_SCALE : value;
-};
-
-const marginScale = (value: number) => {
-  return value * (1 - BREAST_SCALE);
 };
 
 export const BreastOutside = styled.View`
@@ -29,12 +26,8 @@ export const BreastOutside = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 10px 10px 10px red;
   ${(props: Props) =>
-    props.scale &&
-    (props.rightSide
-      ? `margin-right:${marginScale(breastWidth)}`
-      : `margin-left:${marginScale(breastWidth)}`)}
+    props.active && `border:6px solid ${colors.breastShadow};`}
 `;
 
 export const BreastInside = styled.View`
@@ -43,6 +36,8 @@ export const BreastInside = styled.View`
   width: ${(props: Props) => countScale(breastInsideWidth, props.scale)};
   height: ${(props: Props) => countScale(breastInsideWidth, props.scale)};
   border-radius: ${breastInsideWidth};
+  ${(props: Props) =>
+    props.active && `border:6px solid ${colors.breastInsideShadow};`}
 `;
 
 export const Side = styled.View`

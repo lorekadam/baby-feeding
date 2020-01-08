@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AppNavigation from "./Navigation";
 import * as Font from "expo-font";
+import { FeedingProvider } from "./contexts/FeedingContext";
 
 interface State {
   fontLoaded: boolean;
@@ -21,7 +22,11 @@ const App = () => {
     loadFont();
   });
 
-  return fontLoaded ? <AppNavigation /> : null;
+  return fontLoaded ? (
+    <FeedingProvider>
+      <AppNavigation />
+    </FeedingProvider>
+  ) : null;
 };
 
 export default App;
