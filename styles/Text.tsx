@@ -8,6 +8,7 @@ interface Props {
   textAlign?: string;
   light?: boolean;
   bold?: boolean;
+  marginBottom?: number;
 }
 
 export const MyText = styled.Text`
@@ -17,4 +18,6 @@ export const MyText = styled.Text`
   ${(props: Props) => props.light && "font-family: nunitoLight"}
   ${(props: Props) => props.bold && "font-family: nunitoSemiBold"}
   text-align: ${(props: Props) => (props.textAlign ? props.textAlign : "left")};
+  ${(props: Props) =>
+    props.marginBottom && `margin-bottom: ${props.marginBottom}`}
 `;

@@ -1,4 +1,5 @@
 import React from "react";
+import { AsyncStorage } from "react-native";
 import { Feeding } from "../types";
 
 interface State {
@@ -23,8 +24,16 @@ const { Provider, Consumer } = FeedingContext;
 class FeedingProvider extends React.Component {
   state = initialState;
 
-  setSide = (side: string) => {
+  setSide = async (side: string) => {
     this.setState({ side });
+    await AsyncStorage.setItem("side", side);
+  };
+
+  componentDidMount = async () => {
+    const side = await AsyncStorage.getItem("side");
+    if (side !== null) {
+      this.setState({ side });
+    }
   };
 
   render() {
