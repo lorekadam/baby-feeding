@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 export const Breast = () => {
   const transition = <Transition.Change interpolation="easeInOut" />;
-  const ref = useRef();
+  const ref = useRef(null);
   const [insidePosition, setInsidePosition] = useState(50);
   const [changed, setChanged] = useState(false);
   const feedingContext = useContext(FeedingContext);
