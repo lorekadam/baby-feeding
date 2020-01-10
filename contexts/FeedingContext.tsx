@@ -8,6 +8,7 @@ interface State {
   feedings: Feeding[];
   setSide?(side: string): void;
   setFeedingLog?(feeding: Feeding): void;
+  removeFeedingLog?(index: number): void;
 }
 
 const initialState: State = {
@@ -51,13 +52,29 @@ class FeedingProvider extends React.Component {
     );
   };
 
+  removeFeedingLog = (index: number) => {
+    const feedings = this.state.feedings;
+    feedings.splice(index, 1);
+    this.setState(
+      (prevState: State) => ({
+        changed: false,
+        side: feedings.length === 0 ? null : prevState.side,
+        feedings
+      }),
+      () => {
+        this.updateLocalStorage();
+      }
+    );
+  };
+
   render() {
     return (
       <Provider
         value={{
           ...this.state,
           setSide: this.setSide,
-          setFeedingLog: this.setFeedingLog
+          setFeedingLog: this.setFeedingLog,
+          removeFeedingLog: this.removeFeedingLog
         }}
       >
         {this.props.children}

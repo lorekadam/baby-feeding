@@ -9,7 +9,8 @@ export const FeedingListWrapper = styled.View`
 `;
 
 export const FeedingItem = styled.View`
-  border: 3px solid ${colors.main};
+  position: relative;
+  border: 2px solid ${colors.main};
   border-radius: ${APP_RADIUS};
   padding: ${heightPtoDP(2)}px;
   margin-bottom: ${heightPtoDP(1)}px;

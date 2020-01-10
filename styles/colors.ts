@@ -5,5 +5,6 @@ export const colors = {
   breast: "#eaa1a5",
   breastInside: "#db9020",
   breastShadow: "#b27b7d",
-  breastInsideShadow: "#b27218"
+  breastInsideShadow: "#b27218",
+  error: "#e02c35"
 };
