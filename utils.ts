@@ -12,12 +12,16 @@ export const heightPtoDP = (heightPercent: number) => {
   return PixelRatio.roundToNearestPixel((screenHeight * elemHeight) / 100);
 };
 
-export const returnTimeString = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const sec = seconds % 60;
-  return `${minutes >= 10 ? minutes : `0${minutes}`}:${
-    sec >= 10 ? sec : `0${sec}`
-  }`;
+export const returnTimeString = (time: number, showBig = true) => {
+  const bigValue = Math.floor(time / 60);
+  const smallValue = time % 60;
+  if (!showBig && bigValue === 0) {
+    return `${smallValue}`;
+  } else {
+    return `${bigValue >= 10 ? bigValue : `0${bigValue}`}:${
+      smallValue >= 10 ? smallValue : `0${smallValue}`
+    }`;
+  }
 };
 
 export const IndexKeyExtractor = (item: any, index: number) => `${index}`;

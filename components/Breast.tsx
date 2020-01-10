@@ -9,6 +9,10 @@ import LastFeeding from "./LastFeeding";
 import LeftRight from "./LeftRight";
 import { LEFT, RIGHT } from "../globals";
 import StartStop from "./StartStop";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -19,9 +23,10 @@ const styles = StyleSheet.create({
 export const Breast = () => {
   const [insidePosition, setInsidePosition] = useState(50);
   const feedingContext = useContext(FeedingContext);
-  const { changed, side, setSide } = feedingContext;
+  const { changed, side, setSide, feedings } = feedingContext;
   const transition = <Transition.Change interpolation="easeInOut" />;
   const ref = useRef(null);
+  const now = dayjs().format("DD-MM-YYYY HH:mm");
 
   useEffect(() => {
     if (side) {
@@ -38,7 +43,13 @@ export const Breast = () => {
 
   return (
     <CenteredView>
-      {side && <LastFeeding side={side} />}
+      {side && (
+        <LastFeeding
+          side={side}
+          last={feedings[feedings.length - 1]}
+          now={now}
+        />
+      )}
       <Row>
         <Side>
           <TouchableWithoutFeedback onPress={() => setContextSide(LEFT)}>
