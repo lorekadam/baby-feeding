@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "which-one",
-    "slug": "which-one",
+    "name": "breast-feeding",
+    "slug": "breast-feeding",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
@@ -15,6 +15,9 @@
     },
     "androidStatusBar": {
       "backgroundColor": "#eaa1a5"
+    },
+    "android": {
+      "package": "adam.lorek.breast.feeding"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
