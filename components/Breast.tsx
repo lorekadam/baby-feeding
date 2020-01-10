@@ -2,15 +2,10 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import { BreastOutside, BreastInside, Side, TapSide } from "../styles/Breast";
 import { TouchableWithoutFeedback, StyleSheet } from "react-native";
 import { Transitioning, Transition } from "react-native-reanimated";
-
 import dayjs from "dayjs";
-
 import { CenteredView } from "../styles/Views";
 import { Row } from "../styles/Grid";
 import { FeedingContext } from "../contexts/FeedingContext";
-import { MyButton } from "../styles/Buttons";
-import { MyText } from "../styles/Text";
-import { colors } from "../styles/colors";
 import LastFeeding from "./LastFeeding";
 import LeftRight from "./LeftRight";
 import { LEFT, RIGHT } from "../globals";
