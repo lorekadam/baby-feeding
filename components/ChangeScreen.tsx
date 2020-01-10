@@ -15,7 +15,7 @@ export const ChangeScreen = (props: Props) => {
   return (
     <ChangeScreenWrapper>
       <TouchableOpacity onPress={() => props.navigation.navigate(props.screen)}>
-        <MaterialIcons name={props.icon} color={colors.main} size={40} />
+        <MaterialIcons name={props.icon} color={colors.main} size={30} />
       </TouchableOpacity>
     </ChangeScreenWrapper>
   );

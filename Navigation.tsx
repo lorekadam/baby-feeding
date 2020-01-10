@@ -10,7 +10,7 @@ const TabNavigator = createStackNavigator(
     [types.PAST_FEEDS]: PreviousScreen
   },
   {
-    initialRouteName: types.FEED_SCREEN,
+    initialRouteName: types.PAST_FEEDS,
     headerMode: "none"
   }
 );

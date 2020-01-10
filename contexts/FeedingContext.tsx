@@ -5,7 +5,7 @@ import { Feeding } from "../types";
 interface State {
   changed: boolean;
   side: string | null;
-  feeding: Feeding[];
+  feedings: Feeding[];
   setSide?(side: string): void;
   setFeedingLog?(feeding: Feeding): void;
 }
@@ -13,7 +13,7 @@ interface State {
 const initialState: State = {
   changed: false,
   side: null,
-  feeding: []
+  feedings: []
 };
 
 const FeedingContext = React.createContext(initialState);
@@ -43,7 +43,7 @@ class FeedingProvider extends React.Component {
     this.setState(
       (prevState: State) => ({
         changed: false,
-        feeding: [...prevState.feeding, feeding]
+        feedings: [...prevState.feedings, feeding]
       }),
       () => {
         this.updateLocalStorage();

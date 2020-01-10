@@ -19,3 +19,5 @@ export const returnTimeString = (seconds: number) => {
     sec >= 10 ? sec : `0${sec}`
   }`;
 };
+
+export const IndexKeyExtractor = (item: any, index: number) => `${index}`;
