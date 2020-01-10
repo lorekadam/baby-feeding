@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AppNavigation from "./Navigation";
 import * as Font from "expo-font";
 import { FeedingProvider } from "./contexts/FeedingContext";
+import "dayjs/locale/en-gb";
 
 interface State {
   fontLoaded: boolean;

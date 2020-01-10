@@ -3,19 +3,17 @@ import { AsyncStorage } from "react-native";
 import { Feeding } from "../types";
 
 interface State {
+  changed: boolean;
   side: string | null;
   feeding: Feeding[];
   setSide?(side: string): void;
+  setFeedingLog?(feeding: Feeding): void;
 }
 
 const initialState: State = {
+  changed: false,
   side: null,
-  feeding: [
-    {
-      side: "LEFT",
-      dateTime: "08.01.2020 16:48"
-    }
-  ]
+  feeding: []
 };
 
 const FeedingContext = React.createContext(initialState);
@@ -24,16 +22,33 @@ const { Provider, Consumer } = FeedingContext;
 class FeedingProvider extends React.Component {
   state = initialState;
 
-  setSide = async (side: string) => {
-    this.setState({ side });
-    await AsyncStorage.setItem("side", side);
+  componentDidMount = async () => {
+    const storageState = await AsyncStorage.getItem("storageState");
+    if (storageState !== null) {
+      this.setState(JSON.parse(storageState));
+    }
   };
 
-  componentDidMount = async () => {
-    const side = await AsyncStorage.getItem("side");
-    if (side !== null) {
-      this.setState({ side });
-    }
+  updateLocalStorage = async () => {
+    await AsyncStorage.setItem("storageState", JSON.stringify(this.state));
+  };
+
+  setSide = (side: State["side"]) => {
+    this.setState({ changed: true, side }, async () => {
+      this.updateLocalStorage();
+    });
+  };
+
+  setFeedingLog = (feeding: Feeding) => {
+    this.setState(
+      (prevState: State) => ({
+        changed: false,
+        feeding: [...prevState.feeding, feeding]
+      }),
+      () => {
+        this.updateLocalStorage();
+      }
+    );
   };
 
   render() {
@@ -41,7 +56,8 @@ class FeedingProvider extends React.Component {
       <Provider
         value={{
           ...this.state,
-          setSide: this.setSide
+          setSide: this.setSide,
+          setFeedingLog: this.setFeedingLog
         }}
       >
         {this.props.children}

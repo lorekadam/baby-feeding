@@ -6,5 +6,8 @@ export interface NavigationProps {
 
 export interface Feeding {
   side: string;
-  dateTime: string;
+  dateStart: string;
+  timeStart: string;
+  timeEnd: string;
+  duration: string;
 }

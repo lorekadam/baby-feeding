@@ -11,3 +11,11 @@ export const heightPtoDP = (heightPercent: number) => {
   const elemHeight = heightPercent;
   return PixelRatio.roundToNearestPixel((screenHeight * elemHeight) / 100);
 };
+
+export const returnTimeString = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+  return `${minutes >= 10 ? minutes : `0${minutes}`}:${
+    sec >= 10 ? sec : `0${sec}`
+  }`;
+};
