@@ -7,6 +7,7 @@ import { colors } from "../styles/colors";
 import { MyButton } from "../styles/Buttons";
 import { FeedingContext } from "../contexts/FeedingContext";
 import { Row } from "../styles/Grid";
+import dayjs from "dayjs";
 
 interface Props {
   item: Feeding;
@@ -38,7 +39,7 @@ export const FeedingListItem = (props: Props) => {
       <Row alignItems="center">
         <MaterialIcons name="access-time" color={colors.main} size={22} />
         <MyText marginRight={10} marginLeft={10}>
-          {props.item.timeStart}
+          {dayjs(props.item.timeStart, "HH:mm:ss").format("HH:mm")}
         </MyText>
         <MaterialIcons name="timer" color={colors.main} size={22} />
         <MyText marginLeft={10}>{props.item.duration}</MyText>

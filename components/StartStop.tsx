@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { AppState } from "react-native";
 import dayjs from "dayjs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Row } from "../styles/Grid";
@@ -14,6 +15,7 @@ interface State {
   seconds: number;
   timeInterval: any;
   timeStart: string;
+  active: boolean;
 }
 
 export const StartStop = () => {
@@ -23,6 +25,7 @@ export const StartStop = () => {
   const [seconds, setSeconds] = useState<State["seconds"]>(0);
   const [timeInterval, setTimeInterval] = useState<State["timeInterval"]>(null);
   const [timeStart, setTimeStart] = useState<State["timeStart"]>(null);
+  const [active, setActive] = useState<State["active"]>(true);
 
   const saveLog = () => {
     const data: Feeding = {
@@ -37,7 +40,7 @@ export const StartStop = () => {
 
   const startTimer = () => {
     if (!play) {
-      setTimeStart(dayjs().format("HH:mm"));
+      setTimeStart(dayjs().format("HH:mm:ss"));
       const intervalId = setInterval(() => {
         setSeconds(s => s + 1);
       }, 1000);
@@ -50,6 +53,28 @@ export const StartStop = () => {
     }
     setPlay(!play);
   };
+
+  const handleAppStateChange = (nextAppState: string) => {
+    if (nextAppState === "background") {
+      setActive(false);
+    } else {
+      setActive(true);
+    }
+  };
+
+  useEffect(() => {
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => {
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (active && timeStart) {
+      const start = dayjs(timeStart, "HH:mm:ss");
+      setSeconds(start.diff(dayjs(), "second") * -1);
+    }
+  }, [active]);
 
   return (
     <Row alignItems="center">
