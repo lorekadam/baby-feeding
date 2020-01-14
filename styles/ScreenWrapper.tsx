@@ -8,6 +8,7 @@ export const ScreenWrapper = styled.View`
   flex: 1;
   background-color: ${colors.main};
   padding: ${heightPtoDP(3)}px;
+  position: relative;
 `;
 
 export const ScreenRadiusBox = styled.View`
@@ -23,4 +24,9 @@ export const ChangeScreenWrapper = styled.View`
   z-index: 1;
   right: 8;
   top: 6;
+`;
+
+export const AdBannerWrapper = styled.View`
+  bottom: 0;
+  position: absolute;
 `;

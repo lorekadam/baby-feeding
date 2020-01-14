@@ -30,16 +30,20 @@ export const LastFeeding = (props: Props) => {
   }, []);
 
   useEffect(() => {
+    countTimeBackwards();
+  }, [props.last]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       countTimeBackwards();
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, []);
 
-  if (time && time !== `00:00`) {
+  if (time && time !== `00:00` && time !== `0`) {
     return (
-      <MyText marginBottom={20} textAlign="center" bold fontSize={2}>
-        Your last feeding was{" "}
+      <MyText marginBottom={20} textAlign="center" bold fontSize={1.8}>
+        Last feeding was{" "}
         {time.length <= 2 ? `${time} minutes` : `${time} hours`} ago from{" "}
         {props.last.both && "both breasts and ended on "}
         {props.last.side.toLowerCase()} breast
