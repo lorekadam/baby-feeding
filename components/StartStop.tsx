@@ -20,7 +20,7 @@ interface State {
 
 export const StartStop = () => {
   const feedingContext = useContext(FeedingContext);
-  const { side, setFeedingLog } = feedingContext;
+  const { side, both, setFeedingLog } = feedingContext;
   const [play, setPlay] = useState<State["play"]>(false);
   const [seconds, setSeconds] = useState<State["seconds"]>(0);
   const [timeInterval, setTimeInterval] = useState<State["timeInterval"]>(null);
@@ -33,7 +33,8 @@ export const StartStop = () => {
       dateStart: dayjs().format("DD-MM-YYYY"),
       timeStart,
       timeEnd: dayjs().format("HH:mm"),
-      duration: returnTimeString(seconds)
+      duration: returnTimeString(seconds),
+      both
     };
     setFeedingLog(data);
   };

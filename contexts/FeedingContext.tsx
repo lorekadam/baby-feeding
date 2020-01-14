@@ -4,8 +4,10 @@ import { Feeding } from "../types";
 
 interface State {
   changed: boolean;
+  both: boolean;
   side: string | null;
   feedings: Feeding[];
+  setBoth?(): void;
   setSide?(side: string): void;
   setFeedingLog?(feeding: Feeding): void;
   removeFeedingLog?(index: number): void;
@@ -13,6 +15,7 @@ interface State {
 
 const initialState: State = {
   changed: false,
+  both: false,
   side: null,
   feedings: []
 };
@@ -34,6 +37,15 @@ class FeedingProvider extends React.Component {
     await AsyncStorage.setItem("storageState", JSON.stringify(this.state));
   };
 
+  setBoth = () => {
+    this.setState(
+      (prevState: State) => ({ both: !prevState.both }),
+      async () => {
+        this.updateLocalStorage();
+      }
+    );
+  };
+
   setSide = (side: State["side"]) => {
     this.setState({ changed: true, side }, async () => {
       this.updateLocalStorage();
@@ -44,6 +56,7 @@ class FeedingProvider extends React.Component {
     this.setState(
       (prevState: State) => ({
         changed: false,
+        both: false,
         feedings: [...prevState.feedings, feeding]
       }),
       () => {
@@ -58,6 +71,7 @@ class FeedingProvider extends React.Component {
     this.setState(
       (prevState: State) => ({
         changed: false,
+        both: false,
         side: feedings.length === 0 ? null : prevState.side,
         feedings
       }),
@@ -72,6 +86,7 @@ class FeedingProvider extends React.Component {
       <Provider
         value={{
           ...this.state,
+          setBoth: this.setBoth,
           setSide: this.setSide,
           setFeedingLog: this.setFeedingLog,
           removeFeedingLog: this.removeFeedingLog

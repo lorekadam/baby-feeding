@@ -3,20 +3,27 @@ import { Row } from "../styles/Grid";
 import { MyButton } from "../styles/Buttons";
 import { MyText } from "../styles/Text";
 import { colors } from "../styles/colors";
-import { LEFT, RIGHT } from "../globals";
+import { LEFT, RIGHT, BOTH } from "../globals";
 
 interface Props {
+  both: boolean;
   side: string;
-  setContextSide(string): void;
+  setContextSide(side: string): void;
+  setBoth(): void;
 }
 
 export const LeftRight = (props: Props) => {
-  const { side, setContextSide } = props;
+  const { both, setBoth, side, setContextSide } = props;
   return (
     <Row>
       <MyButton active={side === LEFT} onPress={() => setContextSide(LEFT)}>
         <MyText color={side === LEFT && colors.white} bold>
           LEFT
+        </MyText>
+      </MyButton>
+      <MyButton active={both} onPress={setBoth}>
+        <MyText color={both && colors.white} bold>
+          BOTH
         </MyText>
       </MyButton>
       <MyButton active={side === RIGHT} onPress={() => setContextSide(RIGHT)}>

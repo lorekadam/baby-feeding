@@ -10,6 +10,7 @@ export interface Feeding {
   timeStart: string;
   timeEnd: string;
   duration: string;
+  both: boolean;
 }
 
 export interface FeedingItem {

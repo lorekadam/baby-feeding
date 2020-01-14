@@ -17,6 +17,7 @@ interface Props {
 export const FeedingListItem = (props: Props) => {
   const feedingContext = useContext(FeedingContext);
   const { removeFeedingLog } = feedingContext;
+  const { item } = props;
   return (
     <FeedingItem>
       <MyButton
@@ -33,19 +34,22 @@ export const FeedingListItem = (props: Props) => {
       <Row alignItems="center">
         <MaterialIcons name="date-range" color={colors.main} size={22} />
         <MyText flex alignItems="center" marginLeft={10}>
-          {props.item.dateStart}
+          {item.dateStart}
         </MyText>
       </Row>
       <Row alignItems="center">
         <MaterialIcons name="access-time" color={colors.main} size={22} />
         <MyText marginRight={10} marginLeft={10}>
-          {dayjs(props.item.timeStart, "HH:mm:ss").format("HH:mm")}
+          {dayjs(item.timeStart, "HH:mm:ss").format("HH:mm")}
         </MyText>
         <MaterialIcons name="timer" color={colors.main} size={22} />
-        <MyText marginLeft={10}>{props.item.duration}</MyText>
+        <MyText marginLeft={10}>{item.duration}</MyText>
       </Row>
       <Row>
-        <MyText transform="capitalize">{props.item.side}</MyText>
+        {item.both && <MyText>Both breasts, ended on </MyText>}
+        <MyText transform={item.both ? "lowercase" : "capitalize"}>
+          {item.side}
+        </MyText>
         <MyText> side</MyText>
       </Row>
     </FeedingItem>

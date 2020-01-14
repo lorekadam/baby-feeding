@@ -11,14 +11,12 @@ interface Props {
 }
 
 export const FeedingsList = (props: Props) => {
-  const feedings = props.feedings.reverse();
-
   return (
     <FeedingListWrapper>
-      {feedings.length > 0 ? (
+      {props.feedings.length > 0 ? (
         <FlatList
           keyExtractor={IndexKeyExtractor}
-          data={feedings}
+          data={props.feedings.slice().reverse()}
           renderItem={({ item, index }: FeedingItem) => (
             <FeedingListItem item={item} index={index} />
           )}

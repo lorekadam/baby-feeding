@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MyText } from "../styles/Text";
 import { Feeding } from "../types";
 import dayjs from "dayjs";
@@ -10,25 +10,39 @@ dayjs.extend(customParseFormat);
 interface Props {
   side: string;
   last: Feeding;
-  now: string;
 }
 
 export const LastFeeding = (props: Props) => {
-  let time = null;
-  if (props.last) {
-    const lastFeedDate = dayjs(
-      `${props.last.dateStart} ${props.last.timeStart}`,
-      "DD-MM-YYYY HH:mm"
-    );
-    const nowDate = dayjs(props.now, "DD-MM-YYYY HH:mm");
-    time = returnTimeString(nowDate.diff(lastFeedDate, "minute"), false);
-  }
-  if (time) {
+  const [time, setTime] = useState(null);
+  const countTimeBackwards = () => {
+    if (props.last) {
+      const lastFeedDate = dayjs(
+        `${props.last.dateStart} ${props.last.timeStart}`,
+        "DD-MM-YYYY HH:mm"
+      );
+      const nowDate = dayjs(dayjs(), "DD-MM-YYYY HH:mm");
+      setTime(returnTimeString(nowDate.diff(lastFeedDate, "minute"), false));
+    }
+  };
+
+  useEffect(() => {
+    countTimeBackwards();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      countTimeBackwards();
+    }, 1000 * 60);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (time && time !== `00:00`) {
     return (
       <MyText marginBottom={20} textAlign="center" bold fontSize={2}>
         Your last feeding was{" "}
         {time.length <= 2 ? `${time} minutes` : `${time} hours`} ago from{" "}
-        {props.side.toLowerCase()} breast
+        {props.last.both && "both breasts and ended on "}
+        {props.last.side.toLowerCase()} breast
       </MyText>
     );
   } else {

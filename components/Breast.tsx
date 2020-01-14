@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
 export const Breast = () => {
   const [insidePosition, setInsidePosition] = useState(50);
   const feedingContext = useContext(FeedingContext);
-  const { changed, side, setSide, feedings } = feedingContext;
+  const { changed, side, setSide, feedings, both, setBoth } = feedingContext;
   const transition = <Transition.Change interpolation="easeInOut" />;
   const ref = useRef(null);
-  const now = dayjs().format("DD-MM-YYYY HH:mm");
 
   useEffect(() => {
     if (side) {
@@ -43,13 +42,7 @@ export const Breast = () => {
 
   return (
     <CenteredView>
-      {side && (
-        <LastFeeding
-          side={side}
-          last={feedings[feedings.length - 1]}
-          now={now}
-        />
-      )}
+      {side && <LastFeeding side={side} last={feedings[feedings.length - 1]} />}
       <Row>
         <Side>
           <TouchableWithoutFeedback onPress={() => setContextSide(LEFT)}>
@@ -71,7 +64,12 @@ export const Breast = () => {
           </BreastOutside>
         </Transitioning.View>
       </Row>
-      <LeftRight side={side} setContextSide={setContextSide} />
+      <LeftRight
+        side={side}
+        both={both}
+        setContextSide={setContextSide}
+        setBoth={setBoth}
+      />
       {changed && <StartStop />}
     </CenteredView>
   );
