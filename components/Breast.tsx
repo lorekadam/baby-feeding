@@ -1,9 +1,13 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { BreastOutside, BreastInside, Side, TapSide } from "../styles/Breast";
-import { TouchableWithoutFeedback, StyleSheet } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  StyleSheet,
+  LayoutChangeEvent
+} from "react-native";
 import { Transitioning, Transition } from "react-native-reanimated";
 import { CenteredView } from "../styles/Views";
-import { Row } from "../styles/Grid";
+import { Row, Col } from "../styles/Grid";
 import { FeedingContext } from "../contexts/FeedingContext";
 import LastFeeding from "./LastFeeding";
 import LeftRight from "./LeftRight";
@@ -14,14 +18,9 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
-const styles = StyleSheet.create({
-  wrapper: {
-    position: "absolute"
-  }
-});
-
 export const Breast = () => {
-  const [insidePosition, setInsidePosition] = useState(50);
+  const [insidePosition, setInsidePosition] = useState(0);
+  const [height, setHeight] = useState(0);
   const feedingContext = useContext(FeedingContext);
   const { changed, side, setSide, feedings, both, setBoth } = feedingContext;
   const transition = <Transition.Change interpolation="easeInOut" />;
@@ -32,7 +31,7 @@ export const Breast = () => {
       if (ref?.current) {
         ref.current.animateNextTransition();
       }
-      setInsidePosition(side === LEFT ? 35 : 65);
+      setInsidePosition(side === LEFT ? -100 : 100);
     }
   }, [side]);
 
@@ -40,11 +39,15 @@ export const Breast = () => {
     setSide(side);
   };
 
+  const breastHeight = (e: LayoutChangeEvent) => {
+    setHeight(e.nativeEvent.layout.height);
+  };
+
   return (
     <CenteredView>
       {side && <LastFeeding side={side} last={feedings[feedings.length - 1]} />}
       <Row>
-        <Side>
+        <Side onLayout={breastHeight}>
           <TouchableWithoutFeedback onPress={() => setContextSide(LEFT)}>
             <TapSide />
           </TouchableWithoutFeedback>
@@ -54,15 +57,24 @@ export const Breast = () => {
             <TapSide />
           </TouchableWithoutFeedback>
         </Side>
-        <Transitioning.View
-          ref={ref}
-          transition={transition}
-          style={styles.wrapper}
-        >
-          <BreastOutside>
-            <BreastInside style={{ left: `${insidePosition}%` }} />
-          </BreastOutside>
-        </Transitioning.View>
+        <BreastOutside height={height}>
+          <Transitioning.View
+            ref={ref}
+            transition={transition}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <BreastInside
+              height={height}
+              style={{ marginLeft: insidePosition }}
+            />
+          </Transitioning.View>
+        </BreastOutside>
       </Row>
       <LeftRight
         side={side}

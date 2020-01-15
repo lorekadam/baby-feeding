@@ -1,10 +1,6 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import * as Network from "expo-network";
-import {
-  ScreenWrapper,
-  ScreenRadiusBox,
-  AdBannerWrapper
-} from "../styles/ScreenWrapper";
+import { ScreenWrapper, ScreenRadiusBox } from "../styles/ScreenWrapper";
 import { AdMobBanner } from "expo-ads-admob";
 
 interface Props {
@@ -25,19 +21,23 @@ export const BasicScreen = (props: Props) => {
     })();
   }, []);
   return (
-    <ScreenWrapper>
-      <ScreenRadiusBox>{props.children}</ScreenRadiusBox>
+    <React.Fragment>
+      <ScreenWrapper>
+        <ScreenRadiusBox>{props.children}</ScreenRadiusBox>
+      </ScreenWrapper>
       {connection && (
-        <AdBannerWrapper>
-          <AdMobBanner
-            bannerSize="fullBanner"
-            adUnitID="ca-app-pub-4605316137256745/5795847812"
-            servePersonalizedAds={true}
-            onDidFailToReceiveAdWithError={bannerError}
-          />
-        </AdBannerWrapper>
+        <AdMobBanner
+          bannerSize="smartBannerPortrait"
+          adUnitID={
+            __DEV__
+              ? "ca-app-pub-3940256099942544/6300978111"
+              : "ca-app-pub-4605316137256745/5795847812"
+          }
+          servePersonalizedAds={true}
+          onDidFailToReceiveAdWithError={bannerError}
+        />
       )}
-    </ScreenWrapper>
+    </React.Fragment>
   );
 };
 

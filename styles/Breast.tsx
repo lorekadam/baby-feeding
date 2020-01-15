@@ -11,6 +11,7 @@ interface Props {
   rightSide?: boolean;
   scale?: boolean;
   active?: string;
+  height: number;
 }
 
 const countScale = (value: number, scale?: boolean) => {
@@ -18,10 +19,14 @@ const countScale = (value: number, scale?: boolean) => {
 };
 
 export const BreastOutside = styled.View`
+  position: absolute;
   background-color: ${colors.breast};
-  width: ${(props: Props) => countScale(breastWidth, props.scale)};
-  height: ${(props: Props) => countScale(breastWidth, props.scale)};
-  border-radius: ${breastWidth};
+  left: 50%;
+  margin-left: ${(props: Props) =>
+    props.height ? (props.height / 2) * -1 : 0}px;
+  width: ${(props: Props) => props.height};
+  height: ${(props: Props) => props.height};
+  border-radius: ${(props: Props) => props.height};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,15 +39,12 @@ export const BreastOutside = styled.View`
 `;
 
 export const BreastInside = styled.View`
-  position: absolute;
-  left: 50%;
-  top: 55%;
-  margin: -${breastInsideWidth / 2}px
+  margin-top: 30px;
   background-color: ${colors.breastInside};
   z-index: 1;
-  width: ${(props: Props) => countScale(breastInsideWidth, props.scale)};
-  height: ${(props: Props) => countScale(breastInsideWidth, props.scale)};
-  border-radius: ${breastInsideWidth};
+  width: ${(props: Props) => props.height / 3.4};
+  height: ${(props: Props) => props.height / 3.4};
+  border-radius: ${(props: Props) => props.height};
   ${(props: Props) =>
     props.active &&
     `
@@ -54,10 +56,9 @@ export const BreastInside = styled.View`
 export const Side = styled.View`
   display: flex;
   flex: 1;
-  overflow: hidden;
-  height: ${breastWidth};
   justify-content: center;
   z-index: 1;
+  height: 100%;
 `;
 
 export const TapSide = styled.View`

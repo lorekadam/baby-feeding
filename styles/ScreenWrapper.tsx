@@ -27,6 +27,8 @@ export const ChangeScreenWrapper = styled.View`
 `;
 
 export const AdBannerWrapper = styled.View`
+  left: 0;
+  right: 0;
   bottom: 0;
   position: absolute;
 `;
