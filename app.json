@@ -17,6 +17,7 @@
       "backgroundColor": "#eaa1a5"
     },
     "android": {
+      "versionCode": 2,
       "package": "adam.lorek.baby.feeding",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-4605316137256745~2904238392"
