@@ -8,12 +8,13 @@ import { returnTimeString } from "../utils";
 dayjs.extend(customParseFormat);
 
 interface Props {
-  side: string;
   last: Feeding;
 }
 
 export const LastFeeding = (props: Props) => {
   const [time, setTime] = useState(null);
+  const [intervalId, setIntervalId] = useState(null);
+
   const countTimeBackwards = () => {
     if (props.last) {
       const lastFeedDate = dayjs(
@@ -25,20 +26,25 @@ export const LastFeeding = (props: Props) => {
     }
   };
 
-  useEffect(() => {
+  const setChecker = () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
     countTimeBackwards();
+    setIntervalId(
+      setInterval(() => {
+        countTimeBackwards();
+      }, 1000 * 60)
+    );
+  };
+
+  useEffect(() => {
+    setChecker();
   }, []);
 
   useEffect(() => {
-    countTimeBackwards();
+    setChecker();
   }, [props.last]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      countTimeBackwards();
-    }, 1000 * 60);
-    return () => clearInterval(interval);
-  }, []);
 
   if (time && time !== `00:00` && time !== `0`) {
     return (

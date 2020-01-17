@@ -57,7 +57,7 @@ class FeedingProvider extends React.Component {
       (prevState: State) => ({
         changed: false,
         both: false,
-        feedings: [...prevState.feedings, feeding]
+        feedings: [feeding, ...prevState.feedings]
       }),
       () => {
         this.updateLocalStorage();

@@ -45,7 +45,7 @@ export const Breast = () => {
 
   return (
     <CenteredView>
-      {side && <LastFeeding side={side} last={feedings[feedings.length - 1]} />}
+      <LastFeeding last={feedings.length > 0 && feedings[0]} />
       <Row>
         <Side onLayout={breastHeight}>
           <TouchableWithoutFeedback onPress={() => setContextSide(LEFT)}>

@@ -32,7 +32,7 @@ export const StartStop = () => {
       side,
       dateStart: dayjs().format("DD-MM-YYYY"),
       timeStart,
-      timeEnd: dayjs().format("HH:mm"),
+      timeEnd: dayjs().format("HH:mm:ss"),
       duration: returnTimeString(seconds),
       both
     };

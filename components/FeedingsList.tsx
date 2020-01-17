@@ -16,7 +16,7 @@ export const FeedingsList = (props: Props) => {
       {props.feedings.length > 0 ? (
         <FlatList
           keyExtractor={IndexKeyExtractor}
-          data={props.feedings.slice().reverse()}
+          data={props.feedings}
           renderItem={({ item, index }: FeedingItem) => (
             <FeedingListItem item={item} index={index} />
           )}
