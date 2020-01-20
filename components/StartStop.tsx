@@ -7,41 +7,40 @@ import { MyButton } from "../styles/Buttons";
 import { colors } from "../styles/colors";
 import Timer from "./Timer";
 import { FeedingContext } from "../contexts/FeedingContext";
-import { Feeding } from "../types";
+import { FeedingSave } from "../types";
 import { returnTimeString } from "../utils";
 
 interface State {
   play: boolean;
   seconds: number;
   timeInterval: any;
-  timeStart: string;
   active: boolean;
 }
 
 export const StartStop = () => {
   const feedingContext = useContext(FeedingContext);
-  const { side, both, setFeedingLog } = feedingContext;
+  const { setFeedingLog, setTimer, timer } = feedingContext;
   const [play, setPlay] = useState<State["play"]>(false);
   const [seconds, setSeconds] = useState<State["seconds"]>(0);
   const [timeInterval, setTimeInterval] = useState<State["timeInterval"]>(null);
-  const [timeStart, setTimeStart] = useState<State["timeStart"]>(null);
   const [active, setActive] = useState<State["active"]>(true);
 
   const saveLog = () => {
-    const data: Feeding = {
-      side,
-      dateStart: dayjs().format("DD-MM-YYYY"),
-      timeStart,
+    const data: FeedingSave = {
       timeEnd: dayjs().format("HH:mm:ss"),
-      duration: returnTimeString(seconds),
-      both
+      duration: returnTimeString(seconds)
     };
     setFeedingLog(data);
   };
 
-  const startTimer = () => {
+  const startTimer = (addTime = true) => {
     if (!play) {
-      setTimeStart(dayjs().format("HH:mm:ss"));
+      if (addTime) {
+        setTimer({
+          dateStart: dayjs().format("DD-MM-YYYY"),
+          timeStart: dayjs().format("HH:mm:ss")
+        });
+      }
       const intervalId = setInterval(() => {
         setSeconds(s => s + 1);
       }, 1000);
@@ -71,8 +70,14 @@ export const StartStop = () => {
   }, []);
 
   useEffect(() => {
-    if (active && timeStart) {
-      const start = dayjs(timeStart, "HH:mm:ss");
+    if (timer?.timeStart) {
+      startTimer(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (active && timer?.timeStart) {
+      const start = dayjs(timer.timeStart, "HH:mm:ss");
       setSeconds(start.diff(dayjs(), "second") * -1);
     }
   }, [active]);

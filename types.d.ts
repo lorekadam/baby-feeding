@@ -17,3 +17,8 @@ export interface FeedingItem {
   item: Feeding;
   index: number;
 }
+
+export interface FeedingSave {
+  timeEnd: string;
+  duration: string;
+}

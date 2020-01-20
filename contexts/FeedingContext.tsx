@@ -1,23 +1,31 @@
 import React from "react";
 import { AsyncStorage } from "react-native";
-import { Feeding } from "../types";
+import { Feeding, FeedingSave } from "../types";
+
+interface Timer {
+  dateStart: string;
+  timeStart: string;
+}
 
 interface State {
   changed: boolean;
   both: boolean;
   side: string | null;
   feedings: Feeding[];
+  timer: Timer;
   setBoth?(): void;
   setSide?(side: string): void;
-  setFeedingLog?(feeding: Feeding): void;
+  setFeedingLog?(feeding: FeedingSave): void;
   removeFeedingLog?(index: number): void;
+  setTimer?(timer: Timer): void;
 }
 
 const initialState: State = {
   changed: false,
   both: false,
   side: null,
-  feedings: []
+  feedings: [],
+  timer: null
 };
 
 const FeedingContext = React.createContext(initialState);
@@ -52,12 +60,21 @@ class FeedingProvider extends React.Component {
     });
   };
 
-  setFeedingLog = (feeding: Feeding) => {
+  setFeedingLog = (feedingSave: FeedingSave) => {
+    const { side, both, timer } = this.state;
+    const feeding: Feeding = {
+      ...feedingSave,
+      side,
+      both,
+      ...timer
+    };
     this.setState(
       (prevState: State) => ({
         changed: false,
         both: false,
-        feedings: [feeding, ...prevState.feedings]
+        side: null,
+        feedings: [feeding, ...prevState.feedings],
+        timer: null
       }),
       () => {
         this.updateLocalStorage();
@@ -81,6 +98,12 @@ class FeedingProvider extends React.Component {
     );
   };
 
+  setTimer = (timer: Timer) => {
+    this.setState({ ...this.state, timer }, async () => {
+      this.updateLocalStorage();
+    });
+  };
+
   render() {
     return (
       <Provider
@@ -89,7 +112,8 @@ class FeedingProvider extends React.Component {
           setBoth: this.setBoth,
           setSide: this.setSide,
           setFeedingLog: this.setFeedingLog,
-          removeFeedingLog: this.removeFeedingLog
+          removeFeedingLog: this.removeFeedingLog,
+          setTimer: this.setTimer
         }}
       >
         {this.props.children}
