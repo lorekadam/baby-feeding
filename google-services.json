@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "311540481191",
+    "firebase_url": "https://babyfeeding-45bef.firebaseio.com",
+    "project_id": "babyfeeding-45bef",
+    "storage_bucket": "babyfeeding-45bef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311540481191:android:0f49c8233f488d57fb6f82",
+        "android_client_info": {
+          "package_name": "adam.lorek.baby.feeding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311540481191-er5eg3roeovf9q44j3th94fvuiftajli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "adam.lorek.baby.feeding",
+            "certificate_hash": "ab2b25d5cd0f13c9d28860981b3aa8d8bce75a82"
+          }
+        },
+        {
+          "client_id": "311540481191-l48n7smq222icn2f5h1rhka2ogo7koc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAisUa6Q5yvRkYomb-aCWccP9Z4cFUg030"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311540481191-l48n7smq222icn2f5h1rhka2ogo7koc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

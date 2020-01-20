@@ -26,24 +26,32 @@ export const LastFeeding = (props: Props) => {
     }
   };
 
-  const setChecker = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
+  const setChecker = (init = true) => {
+    if (init) {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      countTimeBackwards();
+      setIntervalId(
+        setInterval(() => {
+          countTimeBackwards();
+        }, 1000 * 60)
+      );
+    } else {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     }
-    countTimeBackwards();
-    setIntervalId(
-      setInterval(() => {
-        countTimeBackwards();
-      }, 1000 * 60)
-    );
   };
 
   useEffect(() => {
     setChecker();
+    return () => setChecker(false);
   }, []);
 
   useEffect(() => {
     setChecker();
+    return () => setChecker(false);
   }, [props.last]);
 
   if (time && time !== `00:00` && time !== `0`) {

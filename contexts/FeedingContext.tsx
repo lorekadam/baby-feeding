@@ -1,6 +1,7 @@
 import React from "react";
 import { AsyncStorage } from "react-native";
 import { Feeding, FeedingSave } from "../types";
+import { updateLocalStorage, getLocalStorage } from "../utils";
 
 interface Timer {
   dateStart: string;
@@ -35,28 +36,24 @@ class FeedingProvider extends React.Component {
   state = initialState;
 
   componentDidMount = async () => {
-    const storageState = await AsyncStorage.getItem("storageState");
+    const storageState = await getLocalStorage("feedingStorage");
     if (storageState !== null) {
       this.setState(JSON.parse(storageState));
     }
-  };
-
-  updateLocalStorage = async () => {
-    await AsyncStorage.setItem("storageState", JSON.stringify(this.state));
   };
 
   setBoth = () => {
     this.setState(
       (prevState: State) => ({ both: !prevState.both }),
       async () => {
-        this.updateLocalStorage();
+        await updateLocalStorage("feedingStorage", this.state);
       }
     );
   };
 
   setSide = (side: State["side"]) => {
     this.setState({ changed: true, side }, async () => {
-      this.updateLocalStorage();
+      await updateLocalStorage("feedingStorage", this.state);
     });
   };
 
@@ -76,8 +73,8 @@ class FeedingProvider extends React.Component {
         feedings: [feeding, ...prevState.feedings],
         timer: null
       }),
-      () => {
-        this.updateLocalStorage();
+      async () => {
+        await updateLocalStorage("feedingStorage", this.state);
       }
     );
   };
@@ -92,15 +89,15 @@ class FeedingProvider extends React.Component {
         side: feedings.length === 0 ? null : prevState.side,
         feedings
       }),
-      () => {
-        this.updateLocalStorage();
+      async () => {
+        await updateLocalStorage("feedingStorage", this.state);
       }
     );
   };
 
   setTimer = (timer: Timer) => {
     this.setState({ ...this.state, timer }, async () => {
-      this.updateLocalStorage();
+      await updateLocalStorage("feedingStorage", this.state);
     });
   };
 

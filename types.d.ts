@@ -11,6 +11,7 @@ export interface Feeding {
   timeEnd: string;
   duration: string;
   both: boolean;
+  type?: string;
 }
 
 export interface FeedingItem {

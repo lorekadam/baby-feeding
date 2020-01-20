@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Baby Feeding",
+    "name": "BabyFeeding",
     "slug": "baby-feeding",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -19,6 +19,7 @@
     "android": {
       "versionCode": 4,
       "package": "adam.lorek.baby.feeding",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-4605316137256745~2904238392"
       }

@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio } from "react-native";
+import { Dimensions, PixelRatio, AsyncStorage } from "react-native";
 
 export const widthPtoDP = (widthPercent: number) => {
   const screenWidth = Dimensions.get("window").width;
@@ -25,3 +25,11 @@ export const returnTimeString = (time: number, showBig = true) => {
 };
 
 export const IndexKeyExtractor = (item: any, index: number) => `${index}`;
+
+export const updateLocalStorage = async (storage: string, data = {}) => {
+  await AsyncStorage.setItem(storage, JSON.stringify(data));
+};
+
+export const getLocalStorage = async (storage: string) => {
+  return await AsyncStorage.getItem(storage);
+};
