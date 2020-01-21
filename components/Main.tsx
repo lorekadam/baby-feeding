@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import * as Font from "expo-font";
 import NetInfo from "@react-native-community/netinfo";
 import firebase from "firebase";
 import "@firebase/firestore";

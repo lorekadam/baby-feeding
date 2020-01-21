@@ -9,6 +9,7 @@ import Timer from "./Timer";
 import { FeedingContext } from "../contexts/FeedingContext";
 import { FeedingSave } from "../types";
 import { returnTimeString } from "../utils";
+import { UserContext } from "../contexts/UserContext";
 
 interface State {
   play: boolean;
@@ -18,7 +19,9 @@ interface State {
 }
 
 export const StartStop = () => {
+  const userContext = useContext(UserContext);
   const feedingContext = useContext(FeedingContext);
+  const { user } = userContext;
   const { setFeedingLog, setTimer, timer } = feedingContext;
   const [play, setPlay] = useState<State["play"]>(false);
   const [seconds, setSeconds] = useState<State["seconds"]>(0);
@@ -30,7 +33,7 @@ export const StartStop = () => {
       timeEnd: dayjs().format("HH:mm:ss"),
       duration: returnTimeString(seconds)
     };
-    setFeedingLog(data);
+    setFeedingLog(data, user.uid);
   };
 
   const startTimer = (addTime = true) => {

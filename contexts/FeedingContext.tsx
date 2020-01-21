@@ -2,6 +2,7 @@ import React from "react";
 import { AsyncStorage } from "react-native";
 import { Feeding, FeedingSave } from "../types";
 import { updateLocalStorage, getLocalStorage } from "../utils";
+import { addFeeding } from "../firebase/api";
 
 interface Timer {
   dateStart: string;
@@ -16,7 +17,7 @@ interface State {
   timer: Timer;
   setBoth?(): void;
   setSide?(side: string): void;
-  setFeedingLog?(feeding: FeedingSave): void;
+  setFeedingLog?(feeding: FeedingSave, user?: string): void;
   removeFeedingLog?(index: number): void;
   setTimer?(timer: Timer): void;
 }
@@ -57,7 +58,7 @@ class FeedingProvider extends React.Component {
     });
   };
 
-  setFeedingLog = (feedingSave: FeedingSave) => {
+  setFeedingLog = (feedingSave: FeedingSave, user?: string) => {
     const { side, both, timer } = this.state;
     const feeding: Feeding = {
       ...feedingSave,
@@ -74,6 +75,7 @@ class FeedingProvider extends React.Component {
         timer: null
       }),
       async () => {
+        addFeeding(feeding, user);
         await updateLocalStorage("feedingStorage", this.state);
       }
     );

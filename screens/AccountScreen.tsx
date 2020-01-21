@@ -19,7 +19,22 @@ export const AccountScreen = (props: Props) => {
       <MyText textAlign="center" bold fontSize={4}>
         Account
       </MyText>
-      {user?.uid ? <LogOut /> : <FacebookSignInService />}
+      {user?.uid ? (
+        <React.Fragment>
+          <MyText marginTop={10}>
+            Your data is now available on every device with this account.
+          </MyText>
+          <LogOut />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <MyText marginTop={10}>
+            After loging in Your feeding data will be available on every device
+            with same account.
+          </MyText>
+          <FacebookSignInService />
+        </React.Fragment>
+      )}
     </BasicScreen>
   );
 };
