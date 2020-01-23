@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["android"],
-    "version": "2.0.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,7 +17,7 @@
       "backgroundColor": "#eaa1a5"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "package": "adam.lorek.baby.feeding",
       "googleServicesFile": "./google-services.json",
       "config": {
