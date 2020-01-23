@@ -1,4 +1,5 @@
 import { Dimensions, PixelRatio, AsyncStorage } from "react-native";
+import { Feeding } from "./types";
 
 export const widthPtoDP = (widthPercent: number) => {
   const screenWidth = Dimensions.get("window").width;
@@ -32,4 +33,19 @@ export const updateLocalStorage = async (storage: string, data = {}) => {
 
 export const getLocalStorage = async (storage: string) => {
   return await AsyncStorage.getItem(storage);
+};
+
+export const findIndexToRemove = (array: Feeding[], toRemove: Feeding) => {
+  let index = null;
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    if (
+      element.timeStart === toRemove.timeStart &&
+      element.timeEnd === toRemove.timeEnd
+    ) {
+      index = i;
+      break;
+    }
+  }
+  return index;
 };

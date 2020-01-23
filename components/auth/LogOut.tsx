@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
+import React from "react";
 import { MyButton } from "../../styles/Buttons";
 import { MyText } from "../../styles/Text";
 import firebase from "firebase";

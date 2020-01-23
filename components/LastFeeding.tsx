@@ -31,24 +31,27 @@ export const LastFeeding = (props: Props) => {
       clearInterval(intervalId);
     }
     countTimeBackwards();
-    setIntervalId(
-      setInterval(() => {
-        countTimeBackwards();
-      }, 1000 * 60)
-    );
+    const interval = setInterval(() => {
+      countTimeBackwards();
+    }, 1000 * 60);
+    setIntervalId(interval);
+  };
+
+  const cleanUp = () => {
+    clearInterval(intervalId);
   };
 
   useEffect(() => {
     setChecker();
-    return () => clearInterval(intervalId);
+    return cleanUp;
   }, []);
 
   useEffect(() => {
     setChecker();
-    return () => clearInterval(intervalId);
+    return cleanUp;
   }, [props.last]);
 
-  if (time && time !== `00:00` && time !== `0`) {
+  if (props.last && time && time !== `00:00` && time !== `0`) {
     return (
       <MyText marginBottom={20} textAlign="center" bold fontSize={1.8}>
         Last feeding was{" "}

@@ -1,8 +1,12 @@
 import React from "react";
 import { AsyncStorage } from "react-native";
 import { Feeding, FeedingSave } from "../types";
-import { updateLocalStorage, getLocalStorage } from "../utils";
-import { addFeeding } from "../firebase/api";
+import {
+  updateLocalStorage,
+  getLocalStorage,
+  findIndexToRemove
+} from "../utils";
+import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
 
 interface Timer {
   dateStart: string;
@@ -15,11 +19,15 @@ interface State {
   side: string | null;
   feedings: Feeding[];
   timer: Timer;
+  toSend: Feeding[];
+  toRemove: Feeding[];
   setBoth?(): void;
   setSide?(side: string): void;
   setFeedingLog?(feeding: FeedingSave, user?: string): void;
   removeFeedingLog?(index: number): void;
   setTimer?(timer: Timer): void;
+  clearToSend?(): void;
+  clearToRemove?(): void;
 }
 
 const initialState: State = {
@@ -27,6 +35,8 @@ const initialState: State = {
   both: false,
   side: null,
   feedings: [],
+  toSend: [],
+  toRemove: [],
   timer: null
 };
 
@@ -58,7 +68,7 @@ class FeedingProvider extends React.Component {
     });
   };
 
-  setFeedingLog = (feedingSave: FeedingSave, user?: string) => {
+  setFeedingLog = (feedingSave: FeedingSave) => {
     const { side, both, timer } = this.state;
     const feeding: Feeding = {
       ...feedingSave,
@@ -71,27 +81,37 @@ class FeedingProvider extends React.Component {
         changed: false,
         both: false,
         side: null,
-        feedings: [feeding, ...prevState.feedings],
+        feedings: [...prevState.feedings, feeding],
+        toSend: userIsLogged() ? [] : [...prevState.toSend, feeding],
         timer: null
       }),
       async () => {
-        addFeeding(feeding, user);
+        addFeedingAPI(feeding);
         await updateLocalStorage("feedingStorage", this.state);
       }
     );
   };
 
   removeFeedingLog = (index: number) => {
-    const feedings = this.state.feedings;
-    feedings.splice(index, 1);
+    const { toSend, feedings } = this.state;
+    const removeIndex = feedings.length - index - 1;
+    const removedElement = feedings.splice(removeIndex, 1);
+    if (toSend.length > 0) {
+      toSend.splice(findIndexToRemove(toSend, removedElement[0]), 1);
+    }
     this.setState(
       (prevState: State) => ({
         changed: false,
         both: false,
         side: feedings.length === 0 ? null : prevState.side,
-        feedings
+        feedings,
+        toSend,
+        toRemove: userIsLogged()
+          ? []
+          : [...prevState.toRemove, removedElement[0]]
       }),
       async () => {
+        removeFeedingAPI(removedElement[0]);
         await updateLocalStorage("feedingStorage", this.state);
       }
     );
@@ -99,6 +119,18 @@ class FeedingProvider extends React.Component {
 
   setTimer = (timer: Timer) => {
     this.setState({ ...this.state, timer }, async () => {
+      await updateLocalStorage("feedingStorage", this.state);
+    });
+  };
+
+  clearToSend = () => {
+    this.setState({ ...this.state, toSend: [] }, async () => {
+      await updateLocalStorage("feedingStorage", this.state);
+    });
+  };
+
+  clearToRemove = () => {
+    this.setState({ ...this.state, toRemove: [] }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
     });
   };
@@ -112,7 +144,9 @@ class FeedingProvider extends React.Component {
           setSide: this.setSide,
           setFeedingLog: this.setFeedingLog,
           removeFeedingLog: this.removeFeedingLog,
-          setTimer: this.setTimer
+          setTimer: this.setTimer,
+          clearToSend: this.clearToSend,
+          clearToRemove: this.clearToRemove
         }}
       >
         {this.props.children}

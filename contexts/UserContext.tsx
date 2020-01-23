@@ -1,7 +1,7 @@
 import React from "react";
 import { updateLocalStorage } from "../utils";
 
-interface User {
+export interface User {
   uid: string;
   name: string;
   photo: string;

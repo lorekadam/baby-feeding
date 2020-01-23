@@ -6,6 +6,12 @@ import AppNavigation from "../Navigation";
 import { AdMobBanner } from "expo-ads-admob";
 import "dayjs/locale/en-gb";
 import { UserContext } from "../contexts/UserContext";
+import {
+  createUserAPI,
+  sendFeedingsFromLocalStorage,
+  removeFeedingsFromLocalStorage
+} from "../firebase/api";
+import { FeedingContext } from "../contexts/FeedingContext";
 
 interface State {
   connection: boolean;
@@ -21,11 +27,31 @@ const firebaseConfig = {
 
 const Main = () => {
   const userContext = useContext(UserContext);
+  const feedingContext = useContext(FeedingContext);
+  const { user } = userContext;
+
   const [connection, setConnection] = useState<State["connection"]>(false);
 
   const bannerError = e => {
     console.log(e);
   };
+
+  useEffect(() => {
+    if (user.uid) {
+      createUserAPI(user);
+      const { toSend, toRemove, clearToSend, clearToRemove } = feedingContext;
+      if (toSend.length > 0) {
+        sendFeedingsFromLocalStorage(toSend).then(() => {
+          clearToSend();
+        });
+      }
+      if (toRemove.length > 0) {
+        removeFeedingsFromLocalStorage(toRemove).then(() => {
+          clearToRemove();
+        });
+      }
+    }
+  }, [user.uid]);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -38,7 +64,7 @@ const Main = () => {
     if (firebase.apps.length === 0) {
       firebase.initializeApp(firebaseConfig);
       firebase.auth().onAuthStateChanged(user => {
-        if (user != null) {
+        if (user !== null) {
           userContext.setUser({
             uid: user.uid,
             name: user.displayName,

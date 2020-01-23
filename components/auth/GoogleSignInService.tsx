@@ -19,7 +19,6 @@ export default class GoogleSignInService extends React.Component {
 
   _syncUserWithStateAsync = async () => {
     const user = await GoogleSignIn.signInSilentlyAsync();
-    console.log(user);
     this.setState({ user });
   };
 
