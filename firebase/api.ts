@@ -81,3 +81,18 @@ export const removeFeedingsFromLocalStorage = (feedings: Feeding[]) => {
     });
   }
 };
+
+export const getAllUserFeedings = () => {
+  const user = userIsLogged();
+  if (user) {
+    const db = firebase.firestore();
+    const docRef = db.collection("users").doc(user);
+    return new Promise(resolve => {
+      docRef.get().then(doc => {
+        if (doc.exists) {
+          resolve(doc.data().feedings);
+        }
+      });
+    });
+  }
+};

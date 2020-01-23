@@ -28,6 +28,7 @@ interface State {
   setTimer?(timer: Timer): void;
   clearToSend?(): void;
   clearToRemove?(): void;
+  setFeedings?(feedings: Feeding[]);
 }
 
 const initialState: State = {
@@ -135,6 +136,12 @@ class FeedingProvider extends React.Component {
     });
   };
 
+  setFeedings = (feedings: Feeding[]) => {
+    this.setState({ ...this.state, feedings }, async () => {
+      await updateLocalStorage("feedingStorage", this.state);
+    });
+  };
+
   render() {
     return (
       <Provider
@@ -146,7 +153,8 @@ class FeedingProvider extends React.Component {
           removeFeedingLog: this.removeFeedingLog,
           setTimer: this.setTimer,
           clearToSend: this.clearToSend,
-          clearToRemove: this.clearToRemove
+          clearToRemove: this.clearToRemove,
+          setFeedings: this.setFeedings
         }}
       >
         {this.props.children}

@@ -9,9 +9,11 @@ import { UserContext } from "../contexts/UserContext";
 import {
   createUserAPI,
   sendFeedingsFromLocalStorage,
-  removeFeedingsFromLocalStorage
+  removeFeedingsFromLocalStorage,
+  getAllUserFeedings
 } from "../firebase/api";
 import { FeedingContext } from "../contexts/FeedingContext";
+import { Feeding } from "../types";
 
 interface State {
   connection: boolean;
@@ -39,7 +41,14 @@ const Main = () => {
   useEffect(() => {
     if (user.uid) {
       createUserAPI(user);
-      const { toSend, toRemove, clearToSend, clearToRemove } = feedingContext;
+      const {
+        feedings,
+        toSend,
+        toRemove,
+        clearToSend,
+        clearToRemove,
+        setFeedings
+      } = feedingContext;
       if (toSend.length > 0) {
         sendFeedingsFromLocalStorage(toSend).then(() => {
           clearToSend();
@@ -48,6 +57,11 @@ const Main = () => {
       if (toRemove.length > 0) {
         removeFeedingsFromLocalStorage(toRemove).then(() => {
           clearToRemove();
+        });
+      }
+      if (feedings.length === 0) {
+        getAllUserFeedings().then((data: Feeding[]) => {
+          setFeedings(data);
         });
       }
     }
