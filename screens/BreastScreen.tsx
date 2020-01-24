@@ -2,16 +2,14 @@ import React from "react";
 import BasicScreen from "./BasicScreen";
 import { MyText } from "../styles/Text";
 import { NavigationProps } from "../types";
-import { PAST_FEEDS } from "./types";
-import ChangeScreen from "../components/ChangeScreen";
 import Breast from "../components/Breast";
+import { BREAST_SCREEN } from "./types";
 
 interface Props extends NavigationProps {}
 
-export const HomeScreen = (props: Props) => {
+export const BreastScreen = (props: Props) => {
   return (
-    <BasicScreen>
-      <ChangeScreen icon="history" screen={PAST_FEEDS} />
+    <BasicScreen theme={BREAST_SCREEN}>
       <MyText textAlign="center" bold fontSize={4}>
         Feeding
       </MyText>
@@ -20,4 +18,4 @@ export const HomeScreen = (props: Props) => {
   );
 };
 
-export default HomeScreen;
+export default BreastScreen;

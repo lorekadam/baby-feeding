@@ -6,7 +6,7 @@ import { colors } from "../styles/colors";
 import { withNavigation } from "react-navigation";
 import { NavigationProps } from "../types";
 import { Row } from "../styles/Grid";
-import { ACCOUNT } from "../screens/types";
+import { ACCOUNT_SCREEN } from "../screens/types";
 
 interface Props extends NavigationProps {
   screen: string;
@@ -17,8 +17,10 @@ export const ChangeScreen = (props: Props) => {
   return (
     <ChangeScreenWrapper>
       <Row>
-        {props.navigation.state.routeName !== ACCOUNT && (
-          <TouchableOpacity onPress={() => props.navigation.navigate(ACCOUNT)}>
+        {props.navigation.state.routeName !== ACCOUNT_SCREEN && (
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(ACCOUNT_SCREEN)}
+          >
             <MaterialIcons
               name="account-circle"
               color={colors.main}

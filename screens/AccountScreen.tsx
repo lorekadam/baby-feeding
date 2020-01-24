@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import BasicScreen from "./BasicScreen";
 import { MyText } from "../styles/Text";
 import { NavigationProps } from "../types";
-import ChangeScreen from "../components/ChangeScreen";
-import { FEED_SCREEN } from "./types";
 import FacebookSignInService from "../components/auth/FacebookSignInService";
 import { UserContext } from "../contexts/UserContext";
 import LogOut from "../components/auth/LogOut";
+import { ACCOUNT_SCREEN } from "./types";
 
 interface Props extends NavigationProps {}
 
@@ -14,8 +13,7 @@ export const AccountScreen = (props: Props) => {
   const userContext = useContext(UserContext);
   const { user } = userContext;
   return (
-    <BasicScreen>
-      <ChangeScreen icon="home" screen={FEED_SCREEN} />
+    <BasicScreen theme={ACCOUNT_SCREEN}>
       <MyText textAlign="center" bold fontSize={4}>
         Account
       </MyText>

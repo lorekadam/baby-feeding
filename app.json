@@ -13,9 +13,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#eaa1a5"
     },
-    "androidStatusBar": {
-      "backgroundColor": "#eaa1a5"
-    },
     "android": {
       "versionCode": 5,
       "package": "adam.lorek.baby.feeding",

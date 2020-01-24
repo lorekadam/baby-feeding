@@ -3,7 +3,7 @@ import NetInfo from "@react-native-community/netinfo";
 import firebase from "firebase";
 import "@firebase/firestore";
 import AppNavigation from "../Navigation";
-import { AdMobBanner } from "expo-ads-admob";
+import { AdMobBanner, AdMobInterstitial } from "expo-ads-admob";
 import "dayjs/locale/en-gb";
 import { UserContext } from "../contexts/UserContext";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../firebase/api";
 import { FeedingContext } from "../contexts/FeedingContext";
 import { Feeding } from "../types";
+import { bannerID, fullAdID } from "../globals";
 
 interface State {
   connection: boolean;
@@ -38,6 +39,33 @@ const Main = () => {
     console.log(e);
   };
 
+  // watch connection
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setConnection(state.isConnected);
+    });
+    return unsubscribe();
+  }, []);
+
+  //firebase init
+  useEffect(() => {
+    if (firebase.apps.length === 0) {
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().onAuthStateChanged(user => {
+        if (user !== null) {
+          userContext.setUser({
+            uid: user.uid,
+            name: user.displayName,
+            photo: user.photoURL
+          });
+        } else {
+          userContext.logOut();
+        }
+      });
+    }
+  }, []);
+
+  // send / remove / get data after log in
   useEffect(() => {
     if (user.uid) {
       createUserAPI(user);
@@ -67,47 +95,32 @@ const Main = () => {
     }
   }, [user.uid]);
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setConnection(state.isConnected);
-    });
-    return unsubscribe();
-  }, []);
+  // full ad init
+  // useEffect(() => {
+  //   AdMobInterstitial.setAdUnitID(fullAdID);
+  //   AdMobInterstitial.addEventListener("interstitialDidClose", () => {
+  //     console.log("closed ad");
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    if (firebase.apps.length === 0) {
-      firebase.initializeApp(firebaseConfig);
-      firebase.auth().onAuthStateChanged(user => {
-        if (user !== null) {
-          userContext.setUser({
-            uid: user.uid,
-            name: user.displayName,
-            photo: user.photoURL
-          });
-        } else {
-          userContext.logOut();
-        }
-      });
-    }
-  }, []);
+  // full ad open
+  // useEffect(() => {
+  //   const showFullAd = async () => {
+  //     await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
+  //     await AdMobInterstitial.showAdAsync();
+  //   };
+  //   showFullAd();
+  // }, []);
 
-  return (
-    <React.Fragment>
-      <AppNavigation />
-      {connection && (
-        <AdMobBanner
-          bannerSize="smartBannerPortrait"
-          adUnitID={
-            __DEV__
-              ? "ca-app-pub-3940256099942544/6300978111"
-              : "ca-app-pub-4605316137256745/5795847812"
-          }
-          servePersonalizedAds={true}
-          onDidFailToReceiveAdWithError={bannerError}
-        />
-      )}
-    </React.Fragment>
-  );
+  return <AppNavigation />;
 };
+// {connection && (
+//   <AdMobBanner
+//     bannerSize="smartBannerPortrait"
+//     adUnitID={bannerID}
+//     servePersonalizedAds={true}
+//     onDidFailToReceiveAdWithError={bannerError}
+//   />
+// )}
 
 export default Main;

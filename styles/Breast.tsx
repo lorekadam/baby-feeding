@@ -1,22 +1,13 @@
 import styled from "styled-components/native";
-import { Dimensions } from "react-native";
-import { heightPtoDP } from "../utils";
 import { colors } from "./colors";
-import { BREAST_SCALE } from "../globals";
+import { Theme } from "../types";
 
-const breastWidth = Dimensions.get("window").width - 4 * heightPtoDP(3);
-const breastInsideWidth = breastWidth / 3.4;
-
-interface Props {
+interface Props extends Theme {
   rightSide?: boolean;
   scale?: boolean;
   active?: string;
   height: number;
 }
-
-const countScale = (value: number, scale?: boolean) => {
-  return scale ? value * BREAST_SCALE : value;
-};
 
 export const BreastOutside = styled.View`
   position: absolute;

@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
 import { colors } from "./colors";
 import { heightPtoDP as hp } from "../utils";
+import { Theme } from "../types";
 
-interface Props {
+interface Props extends Theme {
   flex?: boolean;
   color?: string;
   fontSize?: number;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export const MyText = styled.Text`
-  color: ${(props: Props) => (props.color ? props.color : colors.main)};
+  color: ${(props: Props) => (props.color ? props.color : props.theme.main)};
   font-size: ${(props: Props) => (props.fontSize ? hp(props.fontSize) : hp(2))};
   font-family: nunito;
   ${(props: Props) => props.light && "font-family: nunitoLight"}

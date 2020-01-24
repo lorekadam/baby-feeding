@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
 import { APP_RADIUS } from "../globals";
 import { colors } from "./colors";
+import { Theme } from "../types";
 
-interface Props {
+interface Props extends Theme {
   active?: boolean;
   small?: boolean;
   borderColor?: string;
@@ -18,7 +19,7 @@ export const MyButton = styled.TouchableOpacity`
   margin: 20px;
   border: ${(props: Props) =>
     `${props.small ? 2 : 3}px solid ${
-      props.borderColor ? props.borderColor : colors.main
+      props.borderColor ? props.borderColor : props.theme.main
     };`};
   padding: ${(props: Props) =>
     props.round
@@ -27,7 +28,7 @@ export const MyButton = styled.TouchableOpacity`
   border-radius: ${(props: Props) => (props.round ? 700 : APP_RADIUS)};
   display: flex;
   align-items: center;
-  ${(props: Props) => props.active && `background-color: ${colors.main};`}
+  ${(props: Props) => props.active && `background-color: ${props.theme.main};`}
   ${(props: Props) => props.position && `position: ${props.position};`}
   ${(props: Props) => props.top && `top: ${props.top};`}
   ${(props: Props) => props.right && `right: ${props.right};`}

@@ -2,19 +2,17 @@ import React, { useContext } from "react";
 import BasicScreen from "./BasicScreen";
 import { MyText } from "../styles/Text";
 import { NavigationProps } from "../types";
-import { FEED_SCREEN } from "./types";
-import ChangeScreen from "../components/ChangeScreen";
 import { FeedingContext } from "../contexts/FeedingContext";
 import FeedingsList from "../components/FeedingsList";
+import { HISTORY_SCREEN } from "./types";
 
 interface Props extends NavigationProps {}
 
-export const PastFeedsScreen = (props: Props) => {
+export const HistoryScreen = (props: Props) => {
   const feedingContext = useContext(FeedingContext);
   const { feedings } = feedingContext;
   return (
-    <BasicScreen>
-      <ChangeScreen icon="home" screen={FEED_SCREEN} />
+    <BasicScreen theme={HISTORY_SCREEN}>
       <MyText textAlign="center" bold fontSize={4}>
         Past feedings
       </MyText>
@@ -23,4 +21,4 @@ export const PastFeedsScreen = (props: Props) => {
   );
 };
 
-export default PastFeedsScreen;
+export default HistoryScreen;

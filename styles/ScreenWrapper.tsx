@@ -6,7 +6,7 @@ import { APP_RADIUS } from "../globals";
 export const ScreenWrapper = styled.View`
   display: flex;
   flex: 1;
-  background-color: ${colors.main};
+  background-color: ${props => props.theme.main};
   padding: ${heightPtoDP(3)}px;
   position: relative;
 `;
