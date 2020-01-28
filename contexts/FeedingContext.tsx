@@ -1,5 +1,4 @@
 import React from "react";
-import { AsyncStorage } from "react-native";
 import { Feeding, FeedingSave } from "../types";
 import {
   updateLocalStorage,
@@ -8,27 +7,20 @@ import {
 } from "../utils";
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
 
-interface Timer {
-  dateStart: string;
-  timeStart: string;
-}
-
 interface State {
   changed: boolean;
   both: boolean;
   side: string | null;
   feedings: Feeding[];
-  timer: Timer;
   toSend: Feeding[];
   toRemove: Feeding[];
   setBoth?(): void;
   setSide?(side: string): void;
   setFeedingLog?(feeding: FeedingSave, user?: string): void;
   removeFeedingLog?(index: number): void;
-  setTimer?(timer: Timer): void;
   clearToSend?(): void;
   clearToRemove?(): void;
-  setFeedings?(feedings: Feeding[]);
+  setFeedings?(feedings: Feeding[]): void;
 }
 
 const initialState: State = {
@@ -37,8 +29,7 @@ const initialState: State = {
   side: null,
   feedings: [],
   toSend: [],
-  toRemove: [],
-  timer: null
+  toRemove: []
 };
 
 const FeedingContext = React.createContext(initialState);
@@ -70,12 +61,11 @@ class FeedingProvider extends React.Component {
   };
 
   setFeedingLog = (feedingSave: FeedingSave) => {
-    const { side, both, timer } = this.state;
+    const { side, both } = this.state;
     const feeding: Feeding = {
       ...feedingSave,
       side,
-      both,
-      ...timer
+      both
     };
     this.setState(
       (prevState: State) => ({
@@ -83,8 +73,7 @@ class FeedingProvider extends React.Component {
         both: false,
         side: null,
         feedings: [...prevState.feedings, feeding],
-        toSend: userIsLogged() ? [] : [...prevState.toSend, feeding],
-        timer: null
+        toSend: userIsLogged() ? [] : [...prevState.toSend, feeding]
       }),
       async () => {
         addFeedingAPI(feeding);
@@ -118,12 +107,6 @@ class FeedingProvider extends React.Component {
     );
   };
 
-  setTimer = (timer: Timer) => {
-    this.setState({ ...this.state, timer }, async () => {
-      await updateLocalStorage("feedingStorage", this.state);
-    });
-  };
-
   clearToSend = () => {
     this.setState({ ...this.state, toSend: [] }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
@@ -151,7 +134,6 @@ class FeedingProvider extends React.Component {
           setSide: this.setSide,
           setFeedingLog: this.setFeedingLog,
           removeFeedingLog: this.removeFeedingLog,
-          setTimer: this.setTimer,
           clearToSend: this.clearToSend,
           clearToRemove: this.clearToRemove,
           setFeedings: this.setFeedings

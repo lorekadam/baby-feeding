@@ -23,10 +23,17 @@ export interface FeedingItem {
 }
 
 export interface FeedingSave {
+  dateStart: string;
+  timeStart: string;
   timeEnd: string;
   duration: string;
+  type: string;
 }
 
 export interface Theme {
   theme: ColorScheme;
 }
+
+export type Partial<T> = {
+  [P in keyof T]?: T[P];
+};

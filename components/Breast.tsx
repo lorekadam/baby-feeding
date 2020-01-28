@@ -1,17 +1,13 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { BreastOutside, BreastInside, Side, TapSide } from "../styles/Breast";
-import {
-  TouchableWithoutFeedback,
-  StyleSheet,
-  LayoutChangeEvent
-} from "react-native";
+import { TouchableWithoutFeedback, LayoutChangeEvent } from "react-native";
 import { Transitioning, Transition } from "react-native-reanimated";
 import { CenteredView } from "../styles/Views";
-import { Row, Col } from "../styles/Grid";
+import { Row } from "../styles/Grid";
 import { FeedingContext } from "../contexts/FeedingContext";
 import LastFeeding from "./LastFeeding";
 import LeftRight from "./LeftRight";
-import { LEFT, RIGHT } from "../globals";
+import { LEFT, RIGHT, BREAST } from "../globals";
 import StartStop from "./StartStop";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -82,7 +78,7 @@ export const Breast = () => {
         setContextSide={setContextSide}
         setBoth={setBoth}
       />
-      {changed && <StartStop />}
+      {changed && <StartStop type={BREAST} />}
     </CenteredView>
   );
 };

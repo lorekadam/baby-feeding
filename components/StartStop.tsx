@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppState } from "react-native";
 import dayjs from "dayjs";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,26 +9,33 @@ import Timer from "./Timer";
 import { FeedingContext } from "../contexts/FeedingContext";
 import { FeedingSave } from "../types";
 import { returnTimeString } from "../utils";
+import { TimerContext } from "../contexts/TimerContext";
 
-interface State {
-  play: boolean;
-  seconds: number;
-  timeInterval: any;
-  active: boolean;
+interface Props {
+  type: string;
 }
 
-export const StartStop = () => {
+export const StartStop = (props: Props) => {
   const feedingContext = useContext(FeedingContext);
-  const { setFeedingLog, setTimer, timer } = feedingContext;
-  const [play, setPlay] = useState<State["play"]>(false);
-  const [seconds, setSeconds] = useState<State["seconds"]>(0);
-  const [timeInterval, setTimeInterval] = useState<State["timeInterval"]>(null);
-  const [active, setActive] = useState<State["active"]>(true);
+  const { setFeedingLog } = feedingContext;
+  const timerContext = useContext(TimerContext);
+  const {
+    play,
+    seconds,
+    active,
+    dateStart,
+    timeStart,
+    setSeconds,
+    setTimer
+  } = timerContext;
 
   const saveLog = () => {
     const data: FeedingSave = {
+      dateStart,
+      timeStart,
       timeEnd: dayjs().format("HH:mm:ss"),
-      duration: returnTimeString(seconds)
+      duration: returnTimeString(seconds),
+      type: props.type
     };
     setFeedingLog(data);
   };
@@ -38,27 +45,21 @@ export const StartStop = () => {
       if (addTime) {
         setTimer({
           dateStart: dayjs().format("DD-MM-YYYY"),
-          timeStart: dayjs().format("HH:mm:ss")
+          timeStart: dayjs().format("HH:mm:ss"),
+          play: true
         });
       }
-      const intervalId = setInterval(() => {
-        setSeconds(s => s + 1);
-      }, 1000);
-      setTimeInterval(intervalId);
     } else {
-      clearInterval(timeInterval);
       saveLog();
-      setSeconds(0);
-      setTimeInterval(null);
+      setTimer({ play: false });
     }
-    setPlay(!play);
   };
 
   const handleAppStateChange = (nextAppState: string) => {
     if (nextAppState === "background") {
-      setActive(false);
+      setTimer({ active: false });
     } else {
-      setActive(true);
+      setTimer({ active: true });
     }
   };
 
@@ -70,14 +71,14 @@ export const StartStop = () => {
   }, []);
 
   useEffect(() => {
-    if (timer?.timeStart) {
+    if (timeStart) {
       startTimer(false);
     }
   }, []);
 
   useEffect(() => {
-    if (active && timer?.timeStart) {
-      const start = dayjs(timer.timeStart, "HH:mm:ss");
+    if (active && timeStart) {
+      const start = dayjs(timeStart, "HH:mm:ss");
       setSeconds(start.diff(dayjs(), "second") * -1);
     }
   }, [active]);

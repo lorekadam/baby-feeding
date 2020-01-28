@@ -6,6 +6,7 @@ import { FeedingProvider } from "./contexts/FeedingContext";
 import Main from "./components/Main";
 
 import { YellowBox } from "react-native";
+import { TimerProvider } from "./contexts/TimerContext";
 
 interface State {
   fontLoaded: boolean;
@@ -35,9 +36,11 @@ const App = () => {
 
   return fontLoaded ? (
     <UserProvider>
-      <FeedingProvider>
-        <Main />
-      </FeedingProvider>
+      <TimerProvider>
+        <FeedingProvider>
+          <Main />
+        </FeedingProvider>
+      </TimerProvider>
     </UserProvider>
   ) : null;
 };
