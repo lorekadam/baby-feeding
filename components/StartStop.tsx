@@ -16,18 +16,19 @@ interface Props {
 }
 
 export const StartStop = (props: Props) => {
-  const feedingContext = useContext(FeedingContext);
-  const { setFeedingLog } = feedingContext;
-  const timerContext = useContext(TimerContext);
+  const { setFeedingLog } = useContext(FeedingContext);
   const {
     play,
     seconds,
     active,
     dateStart,
     timeStart,
+    timeInterval,
     setSeconds,
-    setTimer
-  } = timerContext;
+    setTimer,
+    startTimer,
+    stopTimer
+  } = useContext(TimerContext);
 
   const saveLog = () => {
     const data: FeedingSave = {
@@ -40,18 +41,18 @@ export const StartStop = (props: Props) => {
     setFeedingLog(data);
   };
 
-  const startTimer = (addTime = true) => {
+  const toggleTimer = () => {
     if (!play) {
-      if (addTime) {
+      if (timeStart === null) {
         setTimer({
           dateStart: dayjs().format("DD-MM-YYYY"),
-          timeStart: dayjs().format("HH:mm:ss"),
-          play: true
+          timeStart: dayjs().format("HH:mm:ss")
         });
       }
+      startTimer();
     } else {
       saveLog();
-      setTimer({ play: false });
+      stopTimer();
     }
   };
 
@@ -63,6 +64,11 @@ export const StartStop = (props: Props) => {
     }
   };
 
+  const updateSecondsToNow = () => {
+    const start = dayjs(timeStart, "HH:mm:ss");
+    setSeconds(start.diff(dayjs(), "second") * -1);
+  };
+
   useEffect(() => {
     AppState.addEventListener("change", handleAppStateChange);
     return () => {
@@ -71,21 +77,21 @@ export const StartStop = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (timeStart) {
-      startTimer(false);
+    if (timeStart && timeInterval === null) {
+      updateSecondsToNow();
+      startTimer();
     }
-  }, []);
+  }, [timeStart]);
 
   useEffect(() => {
     if (active && timeStart) {
-      const start = dayjs(timeStart, "HH:mm:ss");
-      setSeconds(start.diff(dayjs(), "second") * -1);
+      updateSecondsToNow();
     }
   }, [active]);
 
   return (
     <Row alignItems="center">
-      <MyButton round onPress={startTimer}>
+      <MyButton round onPress={toggleTimer}>
         <MaterialIcons
           name={play ? "stop" : "play-arrow"}
           color={colors.main}

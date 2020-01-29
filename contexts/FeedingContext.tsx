@@ -8,7 +8,6 @@ import {
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
 
 interface State {
-  changed: boolean;
   both: boolean;
   side: string | null;
   feedings: Feeding[];
@@ -24,7 +23,6 @@ interface State {
 }
 
 const initialState: State = {
-  changed: false,
   both: false,
   side: null,
   feedings: [],
@@ -55,7 +53,7 @@ class FeedingProvider extends React.Component {
   };
 
   setSide = (side: State["side"]) => {
-    this.setState({ changed: true, side }, async () => {
+    this.setState({ side }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
     });
   };
@@ -69,7 +67,6 @@ class FeedingProvider extends React.Component {
     };
     this.setState(
       (prevState: State) => ({
-        changed: false,
         both: false,
         side: null,
         feedings: [...prevState.feedings, feeding],
@@ -91,7 +88,6 @@ class FeedingProvider extends React.Component {
     }
     this.setState(
       (prevState: State) => ({
-        changed: false,
         both: false,
         side: feedings.length === 0 ? null : prevState.side,
         feedings,
@@ -108,19 +104,19 @@ class FeedingProvider extends React.Component {
   };
 
   clearToSend = () => {
-    this.setState({ ...this.state, toSend: [] }, async () => {
+    this.setState({ toSend: [] }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
     });
   };
 
   clearToRemove = () => {
-    this.setState({ ...this.state, toRemove: [] }, async () => {
+    this.setState({ toRemove: [] }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
     });
   };
 
   setFeedings = (feedings: Feeding[]) => {
-    this.setState({ ...this.state, feedings }, async () => {
+    this.setState({ feedings }, async () => {
       await updateLocalStorage("feedingStorage", this.state);
     });
   };

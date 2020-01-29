@@ -3,7 +3,6 @@ import { MyText } from "../styles/Text";
 import { Feeding } from "../types";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { returnTimeString } from "../utils";
 
 dayjs.extend(customParseFormat);
 
@@ -12,57 +11,14 @@ interface Props {
 }
 
 export const LastFeeding = (props: Props) => {
-  const [time, setTime] = useState(null);
-  const [intervalId, setIntervalId] = useState(null);
-
-  const countTimeBackwards = () => {
-    if (props.last) {
-      const lastFeedDate = dayjs(
-        `${props.last.dateStart} ${props.last.timeStart}`,
-        "DD-MM-YYYY HH:mm"
-      );
-      const nowDate = dayjs(dayjs(), "DD-MM-YYYY HH:mm");
-      setTime(returnTimeString(nowDate.diff(lastFeedDate, "minute"), false));
-    }
-  };
-
-  const setChecker = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-    countTimeBackwards();
-    const interval = setInterval(() => {
-      countTimeBackwards();
-    }, 1000 * 60);
-    setIntervalId(interval);
-  };
-
-  const cleanUp = () => {
-    clearInterval(intervalId);
-  };
-
-  useEffect(() => {
-    setChecker();
-    return cleanUp;
-  }, []);
-
-  useEffect(() => {
-    setChecker();
-    return cleanUp;
-  }, [props.last]);
-
-  if (props.last && time && time !== `00:00` && time !== `0`) {
-    return (
-      <MyText marginBottom={20} textAlign="center" bold fontSize={1.8}>
-        Last feeding was{" "}
-        {time.length <= 2 ? `${time} minutes` : `${time} hours`} ago from{" "}
-        {props.last.both && "both breasts and ended on "}
-        {props.last.side.toLowerCase()} breast
-      </MyText>
-    );
-  } else {
-    return null;
-  }
+  const { last } = props;
+  return (
+    <MyText marginBottom={20} textAlign="center" bold fontSize={1.8}>
+      Last feeding was at {dayjs(last.timeStart, "HH:mm:ss").format("HH:mm")}{" "}
+      from {last.both && "both breasts and ended on "}
+      {last.side.toLowerCase()} breast
+    </MyText>
+  );
 };
 
 export default LastFeeding;

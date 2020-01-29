@@ -18,7 +18,7 @@ export const Breast = () => {
   const [insidePosition, setInsidePosition] = useState(0);
   const [height, setHeight] = useState(0);
   const feedingContext = useContext(FeedingContext);
-  const { changed, side, setSide, feedings, both, setBoth } = feedingContext;
+  const { side, setSide, feedings, both, setBoth } = feedingContext;
   const transition = <Transition.Change interpolation="easeInOut" />;
   const ref = useRef(null);
 
@@ -41,7 +41,9 @@ export const Breast = () => {
 
   return (
     <CenteredView>
-      <LastFeeding last={feedings.length > 0 && feedings[0]} />
+      {feedings.length > 0 && (
+        <LastFeeding last={feedings[feedings.length - 1]} />
+      )}
       <Row>
         <Side onLayout={breastHeight}>
           <TouchableWithoutFeedback onPress={() => setContextSide(LEFT)}>
@@ -78,7 +80,7 @@ export const Breast = () => {
         setContextSide={setContextSide}
         setBoth={setBoth}
       />
-      {changed && <StartStop type={BREAST} />}
+      {side && <StartStop type={BREAST} />}
     </CenteredView>
   );
 };

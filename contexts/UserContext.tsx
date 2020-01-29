@@ -34,7 +34,7 @@ class UserProvider extends React.Component {
   };
 
   logOut = () => {
-    this.setState({ ...initialState }, async () => {
+    this.setState(initialState, async () => {
       await updateLocalStorage("userStorage", this.state);
     });
   };

@@ -1,5 +1,5 @@
 import React from "react";
-import { updateLocalStorage } from "../utils";
+import { updateLocalStorage, getLocalStorage } from "../utils";
 
 interface State {
   play: boolean;
@@ -10,6 +10,8 @@ interface State {
   timeStart: string;
   setSeconds?(seconds: number): void;
   setTimer?(data: Partial<State>): void;
+  startTimer?(): void;
+  stopTimer?(): void;
 }
 
 const initialState: State = {
@@ -27,38 +29,37 @@ const { Provider, Consumer } = TimerContext;
 class TimerProvider extends React.Component {
   state = initialState;
 
-  componentDidUpdate = (_, prevState: State) => {
-    if (prevState.play === false && this.state.play) {
-      const timeInterval = setInterval(() => {
-        this.setState((state: State) => ({
-          ...state,
-          seconds: state.seconds + 1
-        }));
-      }, 1000);
-      this.setState(state => ({ ...state, timeInterval }));
-    }
-
-    if (prevState.play && this.state.play === false) {
-      clearInterval(this.state.timeInterval);
-      this.setState(state => ({
-        ...state,
-        seconds: 0
-      }));
+  componentDidMount = async () => {
+    const storageState = await getLocalStorage("timerStorage");
+    if (storageState !== null) {
+      this.setState({ ...JSON.parse(storageState), timeInterval: null });
     }
   };
 
   setSeconds = (seconds: State["seconds"]) => {
-    this.setState({ ...this.state, seconds }, async () => {
+    this.setState({ seconds }, async () => {
       await updateLocalStorage("timerStorage", this.state);
     });
   };
 
   setTimer = (data: Partial<State>) => {
-    console.log(data);
-    this.setState({ ...this.state, ...data }, async () => {
-      console.log(this.state);
+    this.setState({ ...data }, async () => {
       await updateLocalStorage("timerStorage", this.state);
     });
+  };
+
+  startTimer = () => {
+    const timeInterval = setInterval(() => {
+      this.setState((state: State) => ({
+        seconds: state.seconds + 1
+      }));
+    }, 1000);
+    this.setState({ timeInterval, play: true });
+  };
+
+  stopTimer = () => {
+    clearInterval(this.state.timeInterval);
+    this.setState(initialState);
   };
 
   render() {
@@ -67,7 +68,9 @@ class TimerProvider extends React.Component {
         value={{
           ...this.state,
           setSeconds: this.setSeconds,
-          setTimer: this.setTimer
+          setTimer: this.setTimer,
+          startTimer: this.startTimer,
+          stopTimer: this.stopTimer
         }}
       >
         {this.props.children}
