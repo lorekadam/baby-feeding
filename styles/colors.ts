@@ -16,40 +16,40 @@ export const theme = {
     main: "#008CD7",
     font: "#008CD7",
     onMainFont: "#ffffff",
-    tabIcon: "#ffffff",
-    tabIconActive: "#313030",
+    tabIcon: "#313030",
+    tabIconActive: "#008CD7",
     tabBackground: "#008CD7"
   },
   [types.FORMULA_SCREEN]: {
     main: "#008CD7",
     font: "#008CD7",
     onMainFont: "#ffffff",
-    tabIcon: "#ffffff",
-    tabIconActive: "#313030",
+    tabIcon: "#313030",
+    tabIconActive: "#008CD7",
     tabBackground: "#008CD7"
   },
   [types.BREAST_SCREEN]: {
     main: "#eaa1a5",
     font: "#eaa1a5",
     onMainFont: "#ffffff",
-    tabIcon: "#ffffff",
-    tabIconActive: "#313030",
+    tabIcon: "#313030",
+    tabIconActive: "#eaa1a5",
     tabBackground: "#eaa1a5"
   },
   [types.FOOD_SCREEN]: {
     main: "#008CD7",
     font: "#008CD7",
     onMainFont: "#ffffff",
-    tabIcon: "#ffffff",
-    tabIconActive: "#313030",
+    tabIcon: "#313030",
+    tabIconActive: "#008CD7",
     tabBackground: "#008CD7"
   },
   [types.HISTORY_SCREEN]: {
     main: "#008CD7",
     font: "#008CD7",
     onMainFont: "#ffffff",
-    tabIcon: "#ffffff",
-    tabIconActive: "#313030",
+    tabIcon: "#313030",
+    tabIconActive: "#008CD7",
     tabBackground: "#008CD7"
   }
 };

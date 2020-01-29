@@ -5,10 +5,10 @@ import BreastScreen from "./screens/BreastScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import * as types from "./screens/types";
 import AccountScreen from "./screens/AccountScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import FormulaScreen from "./screens/FormulaScreen";
 import FoodScreen from "./screens/FoodScreen";
-import { colors } from "./styles/colors";
+import { theme } from "./styles/colors";
 import TabBarComponent from "./components/TabBarComponent";
 
 const TabNavigator = createMaterialTopTabNavigator(
@@ -26,18 +26,31 @@ const TabNavigator = createMaterialTopTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName;
-
-        if (routeName === types.BREAST_SCREEN) {
-          iconName = focused
-            ? "ios-information-circle"
-            : "ios-information-circle-outline";
+        let iconName = null;
+        let IconComponent = null;
+        if (routeName === types.ACCOUNT_SCREEN) {
+          IconComponent = Feather;
+          iconName = "user";
+        } else if (routeName === types.FORMULA_SCREEN) {
+          IconComponent = MaterialCommunityIcons;
+          iconName = "bottle-wine";
+        } else if (routeName === types.BREAST_SCREEN) {
+          IconComponent = Feather;
+          iconName = "circle";
+        } else if (routeName === types.FOOD_SCREEN) {
+          IconComponent = MaterialCommunityIcons;
+          iconName = "food-variant";
         } else if (routeName === types.HISTORY_SCREEN) {
-          iconName = focused ? "ios-list-box" : "ios-list";
+          IconComponent = MaterialCommunityIcons;
+          iconName = "history";
         }
 
+        tintColor = focused
+          ? theme[routeName].tabIconActive
+          : theme[routeName].tabIcon;
+
         // You can return any component that you like here!
-        return <Ionicons name={iconName} size={25} color={tintColor} />;
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
       }
     })
   }

@@ -34,8 +34,6 @@ export const TabBarComponent = props => {
             accessibilityLabel={getAccessibilityLabel({ route })}
           >
             {renderIcon({ route, focused: isRouteActive, tintColor })}
-
-            <Text>{getLabelText({ route })}</Text>
           </TabButton>
         );
       })}
