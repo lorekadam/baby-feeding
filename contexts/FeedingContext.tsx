@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, ReactNode } from "react";
+import { useImmer } from "use-immer";
 import { Feeding, FeedingSave } from "../types";
 import {
   updateLocalStorage,
@@ -6,6 +7,10 @@ import {
   findIndexToRemove
 } from "../utils";
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
+
+interface Props {
+  children: ReactNode;
+}
 
 interface State {
   both: boolean;
@@ -33,112 +38,114 @@ const initialState: State = {
 const FeedingContext = React.createContext(initialState);
 const { Provider, Consumer } = FeedingContext;
 
-class FeedingProvider extends React.Component {
-  state = initialState;
+const FeedingProvider = (props: Props) => {
+  const [state, updateState] = useImmer<State>(() => initialState);
 
-  componentDidMount = async () => {
-    const storageState = await getLocalStorage("feedingStorage");
-    if (storageState !== null) {
-      this.setState(JSON.parse(storageState));
-    }
-  };
-
-  setBoth = () => {
-    this.setState(
-      (prevState: State) => ({ both: !prevState.both }),
-      async () => {
-        await updateLocalStorage("feedingStorage", this.state);
+  useEffect(() => {
+    const getData = async () => {
+      const storageState = await getLocalStorage("feedingStorage");
+      if (storageState !== null) {
+        updateState((draft: State) => {
+          draft = JSON.parse(storageState);
+        });
       }
-    );
-  };
+    };
+    getData();
+  }, []);
 
-  setSide = (side: State["side"]) => {
-    this.setState({ side }, async () => {
-      await updateLocalStorage("feedingStorage", this.state);
+  useEffect(() => {
+    const update = async () => {
+      await updateLocalStorage("feedingStorage", state);
+    };
+    update();
+  }, [state]);
+
+  const setBoth = () => {
+    updateState((draft: State) => {
+      draft.both = !draft.both;
     });
   };
 
-  setFeedingLog = (feedingSave: FeedingSave) => {
-    const { side, both } = this.state;
+  const setSide = (side: State["side"]) => {
+    updateState((draft: State) => {
+      draft.side = side;
+    });
+  };
+
+  const setFeedingLog = (feedingSave: FeedingSave) => {
+    const { side, both } = state;
     const feeding: Feeding = {
       ...feedingSave,
       side,
       both
     };
-    this.setState(
-      (prevState: State) => ({
-        both: false,
-        side: null,
-        feedings: [...prevState.feedings, feeding],
-        toSend: userIsLogged() ? [] : [...prevState.toSend, feeding]
-      }),
-      async () => {
-        addFeedingAPI(feeding);
-        await updateLocalStorage("feedingStorage", this.state);
+    updateState((draft: State) => {
+      draft.both = false;
+      draft.side = null;
+      draft.feedings.push(feeding);
+      if (userIsLogged()) {
+        draft.toSend = [];
+      } else {
+        draft.toSend.push(feeding);
       }
-    );
+    });
+    addFeedingAPI(feeding);
   };
 
-  removeFeedingLog = (index: number) => {
-    const { toSend, feedings } = this.state;
+  const removeFeedingLog = (index: number) => {
+    const { toSend, feedings } = state;
     const removeIndex = feedings.length - index - 1;
     const removedElement = feedings.splice(removeIndex, 1);
     if (toSend.length > 0) {
       toSend.splice(findIndexToRemove(toSend, removedElement[0]), 1);
     }
-    this.setState(
-      (prevState: State) => ({
-        both: false,
-        side: feedings.length === 0 ? null : prevState.side,
-        feedings,
-        toSend,
-        toRemove: userIsLogged()
-          ? []
-          : [...prevState.toRemove, removedElement[0]]
-      }),
-      async () => {
-        removeFeedingAPI(removedElement[0]);
-        await updateLocalStorage("feedingStorage", this.state);
+    updateState((draft: State) => {
+      draft.both = false;
+      draft.side = feedings.length === 0 ? null : draft.side;
+      draft.toSend = toSend;
+      if (userIsLogged()) {
+        draft.toRemove = [];
+      } else {
+        draft.toRemove.push(removedElement[0]);
       }
-    );
+    });
+    removeFeedingAPI(removedElement[0]);
   };
 
-  clearToSend = () => {
-    this.setState({ toSend: [] }, async () => {
-      await updateLocalStorage("feedingStorage", this.state);
+  const clearToSend = () => {
+    updateState((draft: State) => {
+      draft.toSend = [];
     });
   };
 
-  clearToRemove = () => {
-    this.setState({ toRemove: [] }, async () => {
-      await updateLocalStorage("feedingStorage", this.state);
+  const clearToRemove = () => {
+    updateState((draft: State) => {
+      draft.toRemove = [];
     });
   };
 
-  setFeedings = (feedings: Feeding[]) => {
-    this.setState({ feedings }, async () => {
-      await updateLocalStorage("feedingStorage", this.state);
+  const setFeedings = (feedings: Feeding[]) => {
+    updateState((draft: State) => {
+      draft.feedings = feedings;
     });
   };
 
-  render() {
-    return (
-      <Provider
-        value={{
-          ...this.state,
-          setBoth: this.setBoth,
-          setSide: this.setSide,
-          setFeedingLog: this.setFeedingLog,
-          removeFeedingLog: this.removeFeedingLog,
-          clearToSend: this.clearToSend,
-          clearToRemove: this.clearToRemove,
-          setFeedings: this.setFeedings
-        }}
-      >
-        {this.props.children}
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider
+      value={{
+        ...state,
+        setBoth,
+        setSide,
+        setFeedingLog,
+        removeFeedingLog,
+        clearToSend,
+        clearToRemove,
+        setFeedings
+      }}
+    >
+      {props.children}
+    </Provider>
+  );
+};
 
 export { FeedingProvider, Consumer as FeedingConsumer, FeedingContext };
