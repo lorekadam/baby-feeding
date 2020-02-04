@@ -20,7 +20,7 @@ export const theme = {
     tabIconActive: "#008CD7",
     tabBackground: "#008CD7"
   },
-  [types.FORMULA_SCREEN]: {
+  [types.MILK_SCREEN]: {
     main: "#008CD7",
     font: "#008CD7",
     onMainFont: "#ffffff",

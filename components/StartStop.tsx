@@ -25,7 +25,8 @@ export const StartStop = (props: Props) => {
     timeStart,
     timeInterval,
     setSeconds,
-    setTimer,
+    setDateTime,
+    setActive,
     startTimer,
     stopTimer
   } = useContext(TimerContext);
@@ -44,10 +45,7 @@ export const StartStop = (props: Props) => {
   const toggleTimer = () => {
     if (!play) {
       if (timeStart === null) {
-        setTimer({
-          dateStart: dayjs().format("DD-MM-YYYY"),
-          timeStart: dayjs().format("HH:mm:ss")
-        });
+        setDateTime(dayjs().format("DD-MM-YYYY"), dayjs().format("HH:mm:ss"));
       }
       startTimer();
     } else {
@@ -58,9 +56,9 @@ export const StartStop = (props: Props) => {
 
   const handleAppStateChange = (nextAppState: string) => {
     if (nextAppState === "background") {
-      setTimer({ active: false });
+      setActive(false);
     } else {
-      setTimer({ active: true });
+      setActive(true);
     }
   };
 

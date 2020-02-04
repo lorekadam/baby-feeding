@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { updateLocalStorage } from "../utils";
+import { HocProps } from "../types";
 
 export interface User {
   uid: string;
@@ -24,34 +25,35 @@ const initialState: State = {
 const UserContext = React.createContext(initialState);
 const { Provider, Consumer } = UserContext;
 
-class UserProvider extends React.Component {
-  state = initialState;
+const UserProvider = (props: HocProps) => {
+  const [state, setState] = useState<State>(initialState);
 
-  setUser = (user: User) => {
-    this.setState({ user }, async () => {
-      await updateLocalStorage("userStorage", this.state);
-    });
+  useEffect(() => {
+    const update = async () => {
+      await updateLocalStorage("userStorage", state);
+    };
+    update();
+  }, [state]);
+
+  const setUser: State["setUser"] = user => {
+    setState({ user });
   };
 
-  logOut = () => {
-    this.setState(initialState, async () => {
-      await updateLocalStorage("userStorage", this.state);
-    });
+  const logOut: State["logOut"] = () => {
+    setState(initialState);
   };
 
-  render() {
-    return (
-      <Provider
-        value={{
-          ...this.state,
-          setUser: this.setUser,
-          logOut: this.logOut
-        }}
-      >
-        {this.props.children}
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider
+      value={{
+        ...state,
+        setUser,
+        logOut
+      }}
+    >
+      {props.children}
+    </Provider>
+  );
+};
 
 export { UserProvider, Consumer as FeedingConsumer, UserContext };

@@ -6,7 +6,7 @@ import HistoryScreen from "./screens/HistoryScreen";
 import * as types from "./screens/types";
 import AccountScreen from "./screens/AccountScreen";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import FormulaScreen from "./screens/FormulaScreen";
+import MilkScreen from "./screens/FormulaScreen";
 import FoodScreen from "./screens/FoodScreen";
 import { theme } from "./styles/colors";
 import TabBarComponent from "./components/TabBarComponent";
@@ -14,7 +14,7 @@ import TabBarComponent from "./components/TabBarComponent";
 const TabNavigator = createMaterialTopTabNavigator(
   {
     [types.ACCOUNT_SCREEN]: AccountScreen,
-    [types.FORMULA_SCREEN]: FormulaScreen,
+    [types.MILK_SCREEN]: MilkScreen,
     [types.BREAST_SCREEN]: BreastScreen,
     [types.FOOD_SCREEN]: FoodScreen,
     [types.HISTORY_SCREEN]: HistoryScreen
@@ -31,7 +31,7 @@ const TabNavigator = createMaterialTopTabNavigator(
         if (routeName === types.ACCOUNT_SCREEN) {
           IconComponent = Feather;
           iconName = "user";
-        } else if (routeName === types.FORMULA_SCREEN) {
+        } else if (routeName === types.MILK_SCREEN) {
           IconComponent = MaterialCommunityIcons;
           iconName = "bottle-wine";
         } else if (routeName === types.BREAST_SCREEN) {

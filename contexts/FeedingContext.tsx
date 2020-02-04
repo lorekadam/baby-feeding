@@ -1,16 +1,12 @@
-import React, { useEffect, ReactNode } from "react";
+import React, { useEffect } from "react";
 import { useImmer } from "use-immer";
-import { Feeding, FeedingSave } from "../types";
+import { Feeding, FeedingSave, HocProps } from "../types";
 import {
   updateLocalStorage,
   getLocalStorage,
   findIndexToRemove
 } from "../utils";
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
-
-interface Props {
-  children: ReactNode;
-}
 
 interface State {
   both: boolean;
@@ -19,12 +15,12 @@ interface State {
   toSend: Feeding[];
   toRemove: Feeding[];
   setBoth?(): void;
-  setSide?(side: string): void;
+  setSide?(side: State["side"]): void;
   setFeedingLog?(feeding: FeedingSave, user?: string): void;
   removeFeedingLog?(index: number): void;
   clearToSend?(): void;
   clearToRemove?(): void;
-  setFeedings?(feedings: Feeding[]): void;
+  setFeedings?(feedings: State["feedings"]): void;
 }
 
 const initialState: State = {
@@ -38,15 +34,15 @@ const initialState: State = {
 const FeedingContext = React.createContext(initialState);
 const { Provider, Consumer } = FeedingContext;
 
-const FeedingProvider = (props: Props) => {
+const FeedingProvider = (props: HocProps) => {
   const [state, updateState] = useImmer<State>(() => initialState);
 
   useEffect(() => {
     const getData = async () => {
       const storageState = await getLocalStorage("feedingStorage");
       if (storageState !== null) {
-        updateState((draft: State) => {
-          draft = JSON.parse(storageState);
+        updateState(() => {
+          return JSON.parse(storageState);
         });
       }
     };
@@ -60,19 +56,19 @@ const FeedingProvider = (props: Props) => {
     update();
   }, [state]);
 
-  const setBoth = () => {
+  const setBoth: State["setBoth"] = () => {
     updateState((draft: State) => {
       draft.both = !draft.both;
     });
   };
 
-  const setSide = (side: State["side"]) => {
+  const setSide: State["setSide"] = side => {
     updateState((draft: State) => {
       draft.side = side;
     });
   };
 
-  const setFeedingLog = (feedingSave: FeedingSave) => {
+  const setFeedingLog: State["setFeedingLog"] = feedingSave => {
     const { side, both } = state;
     const feeding: Feeding = {
       ...feedingSave,
@@ -92,14 +88,12 @@ const FeedingProvider = (props: Props) => {
     addFeedingAPI(feeding);
   };
 
-  const removeFeedingLog = (index: number) => {
+  const removeFeedingLog: State["removeFeedingLog"] = index => {
     const { toSend, feedings } = state;
-    const removeIndex = feedings.length - index - 1;
-    const removedElement = feedings.splice(removeIndex, 1);
-    if (toSend.length > 0) {
-      toSend.splice(findIndexToRemove(toSend, removedElement[0]), 1);
-    }
+    let removedElement: Feeding[];
     updateState((draft: State) => {
+      const removeIndex = draft.feedings.length - index - 1;
+      removedElement = draft.feedings.splice(removeIndex, 1);
       draft.both = false;
       draft.side = feedings.length === 0 ? null : draft.side;
       draft.toSend = toSend;
@@ -108,23 +102,29 @@ const FeedingProvider = (props: Props) => {
       } else {
         draft.toRemove.push(removedElement[0]);
       }
+      if (draft.toSend.length > 0) {
+        draft.toSend.splice(
+          findIndexToRemove(draft.toSend, removedElement[0]),
+          1
+        );
+      }
+      removeFeedingAPI(removedElement[0]);
     });
-    removeFeedingAPI(removedElement[0]);
   };
 
-  const clearToSend = () => {
+  const clearToSend: State["clearToSend"] = () => {
     updateState((draft: State) => {
       draft.toSend = [];
     });
   };
 
-  const clearToRemove = () => {
+  const clearToRemove: State["clearToRemove"] = () => {
     updateState((draft: State) => {
       draft.toRemove = [];
     });
   };
 
-  const setFeedings = (feedings: Feeding[]) => {
+  const setFeedings: State["setFeedings"] = feedings => {
     updateState((draft: State) => {
       draft.feedings = feedings;
     });

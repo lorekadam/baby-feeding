@@ -1,8 +1,13 @@
 import { NavigationScreenProp } from "react-navigation";
 import { ColorScheme } from "./contexts/MyThemeContext";
+import { ReactNode } from "react";
 
 export interface NavigationProps {
   navigation: NavigationScreenProp<any, any>;
+}
+
+export interface HocProps {
+  children: ReactNode;
 }
 
 export interface Feeding {

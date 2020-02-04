@@ -1,82 +1,109 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { updateLocalStorage, getLocalStorage } from "../utils";
+import { useImmer } from "use-immer";
+import { HocProps } from "../types";
 
 interface State {
-  play: boolean;
-  seconds: number;
-  timeInterval: any;
-  active: boolean;
   dateStart: string;
   timeStart: string;
-  setSeconds?(seconds: number): void;
-  setTimer?(data: Partial<State>): void;
+  timeInterval: any;
+  seconds: number;
+  play: boolean;
+  active: boolean;
+  setSeconds?(seconds: State["seconds"]): void;
+  setDateTime?(
+    dateStart: State["dateStart"],
+    timeStart: State["timeStart"]
+  ): void;
+  setActive?(active: State["active"]): void;
   startTimer?(): void;
   stopTimer?(): void;
 }
 
 const initialState: State = {
-  play: false,
-  seconds: 0,
-  timeInterval: null,
-  active: true,
   dateStart: null,
-  timeStart: null
+  timeStart: null,
+  timeInterval: null,
+  seconds: 0,
+  play: false,
+  active: true
 };
 
 const TimerContext = React.createContext(initialState);
 const { Provider, Consumer } = TimerContext;
 
-class TimerProvider extends React.Component {
-  state = initialState;
+const TimerProvider = (props: HocProps) => {
+  const [state, updateState] = useImmer(initialState);
 
-  componentDidMount = async () => {
-    const storageState = await getLocalStorage("timerStorage");
-    if (storageState !== null) {
-      this.setState({ ...JSON.parse(storageState), timeInterval: null });
-    }
-  };
+  useEffect(() => {
+    const getData = async () => {
+      const storageState = await getLocalStorage("timerStore");
+      if (storageState !== null) {
+        updateState(() => {
+          return { ...JSON.parse(storageState), timeInterval: null };
+        });
+      }
+    };
+    getData();
+  }, []);
 
-  setSeconds = (seconds: State["seconds"]) => {
-    this.setState({ seconds }, async () => {
-      await updateLocalStorage("timerStorage", this.state);
+  useEffect(() => {
+    const update = async () => {
+      await updateLocalStorage("timerStore", state);
+    };
+    update();
+  }, [state]);
+
+  const setSeconds: State["setSeconds"] = seconds => {
+    updateState((draft: State) => {
+      draft.seconds = seconds;
     });
   };
 
-  setTimer = (data: Partial<State>) => {
-    this.setState({ ...data }, async () => {
-      await updateLocalStorage("timerStorage", this.state);
+  const setDateTime: State["setDateTime"] = (dateStart, timeStart) => {
+    updateState((draft: State) => {
+      draft.dateStart = dateStart;
+      draft.timeStart = timeStart;
     });
   };
 
-  startTimer = () => {
+  const setActive: State["setActive"] = active => {
+    updateState((draft: State) => {
+      draft.active = active;
+    });
+  };
+
+  const startTimer: State["startTimer"] = () => {
     const timeInterval = setInterval(() => {
-      this.setState((state: State) => ({
-        seconds: state.seconds + 1
-      }));
+      updateState((draft: State) => {
+        draft.seconds = draft.seconds + 1;
+      });
     }, 1000);
-    this.setState({ timeInterval, play: true });
+    updateState((draft: State) => {
+      draft.timeInterval = timeInterval;
+      draft.play = true;
+    });
   };
 
-  stopTimer = () => {
-    clearInterval(this.state.timeInterval);
-    this.setState(initialState);
+  const stopTimer = () => {
+    clearInterval(state.timeInterval);
+    updateState(() => initialState);
   };
 
-  render() {
-    return (
-      <Provider
-        value={{
-          ...this.state,
-          setSeconds: this.setSeconds,
-          setTimer: this.setTimer,
-          startTimer: this.startTimer,
-          stopTimer: this.stopTimer
-        }}
-      >
-        {this.props.children}
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider
+      value={{
+        ...state,
+        setSeconds,
+        setDateTime,
+        setActive,
+        startTimer,
+        stopTimer
+      }}
+    >
+      {props.children}
+    </Provider>
+  );
+};
 
 export { TimerProvider, Consumer as TimerConsumer, TimerContext };
