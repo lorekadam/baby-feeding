@@ -10,6 +10,8 @@ import MilkScreen from "./screens/FormulaScreen";
 import FoodScreen from "./screens/FoodScreen";
 import { theme } from "./styles/colors";
 import TabBarComponent from "./components/TabBarComponent";
+import Milk from "./components/BarIcons/Milk";
+import Food from "./components/BarIcons/Food";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -32,13 +34,13 @@ const TabNavigator = createMaterialTopTabNavigator(
           IconComponent = Feather;
           iconName = "user";
         } else if (routeName === types.MILK_SCREEN) {
-          IconComponent = MaterialCommunityIcons;
+          IconComponent = Milk;
           iconName = "bottle-wine";
         } else if (routeName === types.BREAST_SCREEN) {
           IconComponent = Feather;
           iconName = "circle";
         } else if (routeName === types.FOOD_SCREEN) {
-          IconComponent = MaterialCommunityIcons;
+          IconComponent = Food;
           iconName = "food-variant";
         } else if (routeName === types.HISTORY_SCREEN) {
           IconComponent = MaterialCommunityIcons;
