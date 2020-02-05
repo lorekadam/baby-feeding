@@ -5,13 +5,18 @@ import BreastScreen from "./screens/BreastScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import * as types from "./screens/types";
 import AccountScreen from "./screens/AccountScreen";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import MilkScreen from "./screens/FormulaScreen";
 import FoodScreen from "./screens/FoodScreen";
 import { theme } from "./styles/colors";
 import TabBarComponent from "./components/TabBarComponent";
-import Milk from "./components/BarIcons/Milk";
-import Food from "./components/BarIcons/Food";
+import SvgIcon from "./components/BarIcons/SvgIcon";
+import {
+  FoodSvg,
+  MilkSvg,
+  UserSvg,
+  HistorySvg,
+  BreastSvg
+} from "./components/BarIcons/Icons";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -28,31 +33,30 @@ const TabNavigator = createMaterialTopTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName = null;
         let IconComponent = null;
+        let svg = null;
         if (routeName === types.ACCOUNT_SCREEN) {
-          IconComponent = Feather;
-          iconName = "user";
+          IconComponent = SvgIcon;
+          svg = UserSvg;
         } else if (routeName === types.MILK_SCREEN) {
-          IconComponent = Milk;
-          iconName = "bottle-wine";
+          IconComponent = SvgIcon;
+          svg = MilkSvg;
         } else if (routeName === types.BREAST_SCREEN) {
-          IconComponent = Feather;
-          iconName = "circle";
+          IconComponent = SvgIcon;
+          svg = BreastSvg;
         } else if (routeName === types.FOOD_SCREEN) {
-          IconComponent = Food;
-          iconName = "food-variant";
+          IconComponent = SvgIcon;
+          svg = FoodSvg;
         } else if (routeName === types.HISTORY_SCREEN) {
-          IconComponent = MaterialCommunityIcons;
-          iconName = "history";
+          IconComponent = SvgIcon;
+          svg = HistorySvg;
         }
 
         tintColor = focused
           ? theme[routeName].tabIconActive
           : theme[routeName].tabIcon;
 
-        // You can return any component that you like here!
-        return <IconComponent name={iconName} size={25} color={tintColor} />;
+        return <IconComponent color={tintColor} svg={svg} />;
       }
     })
   }
