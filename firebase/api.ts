@@ -27,6 +27,7 @@ export const createUserAPI = (user: User) => {
 };
 
 export const addFeedingAPI = (feeding: Feeding) => {
+  console.log(feeding);
   const user = userIsLogged();
   if (user) {
     const db = firebase.firestore();

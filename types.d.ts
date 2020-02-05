@@ -11,15 +11,18 @@ export interface HocProps {
 }
 
 export interface Feeding {
-  side?: string;
   dateStart: string;
   timeStart: string;
-  timeEnd: string;
-  duration: string;
-  both: boolean;
   type: string;
-  amount?: number;
+  side?: string;
+  timeEnd?: string;
+  duration?: string;
+  both?: boolean;
+  milkType?: MilkType;
+  mililitres?: string;
+  grams?: string;
   product?: string;
+  amount?: string;
 }
 
 export interface FeedingItem {
@@ -27,12 +30,14 @@ export interface FeedingItem {
   index: number;
 }
 
+export type MilkType = "FORMULA_MILK" | "BREAST_MILK";
+
 export interface FeedingSave {
   dateStart: string;
   timeStart: string;
-  timeEnd: string;
-  duration: string;
   type: string;
+  timeEnd?: string;
+  duration?: string;
 }
 
 export interface Theme {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useImmer } from "use-immer";
-import { Feeding, FeedingSave, HocProps } from "../types";
+import { Feeding, FeedingSave, HocProps, MilkType } from "../types";
 import {
   updateLocalStorage,
   getLocalStorage,
@@ -9,11 +9,16 @@ import {
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
 
 interface State {
-  both: boolean;
-  side: string | null;
+  both?: boolean;
+  side?: string | null;
   feedings: Feeding[];
   toSend: Feeding[];
   toRemove: Feeding[];
+  milkType?: MilkType | null;
+  mililitres?: string | null;
+  grams?: string | null;
+  product?: string | null;
+  amount?: string | null;
   setBoth?(): void;
   setSide?(side: State["side"]): void;
   setFeedingLog?(feeding: FeedingSave, user?: string): void;
@@ -21,11 +26,21 @@ interface State {
   clearToSend?(): void;
   clearToRemove?(): void;
   setFeedings?(feedings: State["feedings"]): void;
+  setMilkType?(type: State["milkType"]): void;
+  setMililitres?(mililitres: State["mililitres"]): void;
+  setGrams?(grams: State["grams"]): void;
+  setProduct?(product: State["product"]): void;
+  setAmount?(amount: State["amount"]): void;
 }
 
 const initialState: State = {
   both: false,
   side: null,
+  milkType: null,
+  mililitres: null,
+  grams: null,
+  product: null,
+  amount: null,
   feedings: [],
   toSend: [],
   toRemove: []
@@ -69,11 +84,17 @@ const FeedingProvider = (props: HocProps) => {
   };
 
   const setFeedingLog: State["setFeedingLog"] = feedingSave => {
-    const { side, both } = state;
+    const { side, both, milkType, mililitres, grams, product, amount } = state;
+    console.log(amount);
     const feeding: Feeding = {
       ...feedingSave,
       side,
-      both
+      both,
+      milkType,
+      mililitres,
+      grams,
+      product,
+      amount
     };
     updateState((draft: State) => {
       draft.both = false;
@@ -130,6 +151,33 @@ const FeedingProvider = (props: HocProps) => {
     });
   };
 
+  const setMilkType: State["setMilkType"] = milkType => {
+    updateState((draft: State) => {
+      draft.milkType = milkType;
+    });
+  };
+
+  const setMililitres: State["setMililitres"] = mililitres => {
+    updateState((draft: State) => {
+      draft.mililitres = mililitres;
+    });
+  };
+  const setGrams: State["setGrams"] = grams => {
+    updateState((draft: State) => {
+      draft.grams = grams;
+    });
+  };
+  const setProduct: State["setProduct"] = product => {
+    updateState((draft: State) => {
+      draft.product = product;
+    });
+  };
+  const setAmount: State["setAmount"] = amount => {
+    updateState((draft: State) => {
+      draft.amount = amount;
+    });
+  };
+
   return (
     <Provider
       value={{
@@ -140,7 +188,12 @@ const FeedingProvider = (props: HocProps) => {
         removeFeedingLog,
         clearToSend,
         clearToRemove,
-        setFeedings
+        setFeedings,
+        setMilkType,
+        setMililitres,
+        setGrams,
+        setProduct,
+        setAmount
       }}
     >
       {props.children}

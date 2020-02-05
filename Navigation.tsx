@@ -5,7 +5,7 @@ import BreastScreen from "./screens/BreastScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import * as types from "./screens/types";
 import AccountScreen from "./screens/AccountScreen";
-import MilkScreen from "./screens/FormulaScreen";
+import MilkScreen from "./screens/MilkScreen";
 import FoodScreen from "./screens/FoodScreen";
 import { theme } from "./styles/colors";
 import TabBarComponent from "./components/TabBarComponent";
@@ -27,7 +27,7 @@ const TabNavigator = createMaterialTopTabNavigator(
     [types.HISTORY_SCREEN]: HistoryScreen
   },
   {
-    initialRouteName: types.BREAST_SCREEN,
+    initialRouteName: types.MILK_SCREEN,
     tabBarPosition: "bottom",
     tabBarComponent: TabBarComponent,
     defaultNavigationOptions: ({ navigation }) => ({
