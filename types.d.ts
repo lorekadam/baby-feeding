@@ -20,7 +20,7 @@ export interface Feeding {
   both?: boolean;
   milkType?: MilkType;
   mililitres?: string;
-  grams?: string;
+  scoops?: string;
   product?: string;
   amount?: string;
 }

@@ -19,10 +19,10 @@ export const Milk = () => {
   const {
     milkType,
     mililitres,
-    grams,
+    scoops,
     setMilkType,
     setMililitres,
-    setGrams,
+    setScoops,
     setFeedingLog
   } = feedingContext;
 
@@ -37,7 +37,7 @@ export const Milk = () => {
 
   return (
     <CenteredView>
-      <SvgCss xml={MilkSvg("#000000")} width="60%" height="60%" />
+      <SvgCss xml={MilkSvg(theme[MILK_SCREEN].main)} width="60%" height="60%" />
       <MilkType type={milkType} setMilkType={setMilkType} />
       {milkType && (
         <React.Fragment>
@@ -53,21 +53,23 @@ export const Milk = () => {
             {milkType === FORMULA_MILK && (
               <Col gutters>
                 <NumericValueInput
-                  value={grams}
-                  setValue={setGrams}
-                  label="g"
-                  placeholder="Grams..."
+                  value={scoops}
+                  setValue={setScoops}
+                  label="scoops"
+                  placeholder="scoops..."
                 />
               </Col>
             )}
           </Row>
-          <MyButton round onPress={saveLog}>
-            <MaterialIcons
-              name="add"
-              color={theme[MILK_SCREEN].font}
-              size={40}
-            />
-          </MyButton>
+          {mililitres && (
+            <MyButton round onPress={saveLog}>
+              <MaterialIcons
+                name="add"
+                color={theme[MILK_SCREEN].font}
+                size={40}
+              />
+            </MyButton>
+          )}
         </React.Fragment>
       )}
     </CenteredView>

@@ -16,7 +16,7 @@ interface State {
   toRemove: Feeding[];
   milkType?: MilkType | null;
   mililitres?: string | null;
-  grams?: string | null;
+  scoops?: string | null;
   product?: string | null;
   amount?: string | null;
   setBoth?(): void;
@@ -28,7 +28,7 @@ interface State {
   setFeedings?(feedings: State["feedings"]): void;
   setMilkType?(type: State["milkType"]): void;
   setMililitres?(mililitres: State["mililitres"]): void;
-  setGrams?(grams: State["grams"]): void;
+  setScoops?(scoops: State["scoops"]): void;
   setProduct?(product: State["product"]): void;
   setAmount?(amount: State["amount"]): void;
 }
@@ -38,7 +38,7 @@ const initialState: State = {
   side: null,
   milkType: null,
   mililitres: null,
-  grams: null,
+  scoops: null,
   product: null,
   amount: null,
   feedings: [],
@@ -84,15 +84,14 @@ const FeedingProvider = (props: HocProps) => {
   };
 
   const setFeedingLog: State["setFeedingLog"] = feedingSave => {
-    const { side, both, milkType, mililitres, grams, product, amount } = state;
-    console.log(amount);
+    const { side, both, milkType, mililitres, scoops, product, amount } = state;
     const feeding: Feeding = {
       ...feedingSave,
       side,
       both,
       milkType,
       mililitres,
-      grams,
+      scoops,
       product,
       amount
     };
@@ -162,9 +161,9 @@ const FeedingProvider = (props: HocProps) => {
       draft.mililitres = mililitres;
     });
   };
-  const setGrams: State["setGrams"] = grams => {
+  const setScoops: State["setScoops"] = scoops => {
     updateState((draft: State) => {
-      draft.grams = grams;
+      draft.scoops = scoops;
     });
   };
   const setProduct: State["setProduct"] = product => {
@@ -191,7 +190,7 @@ const FeedingProvider = (props: HocProps) => {
         setFeedings,
         setMilkType,
         setMililitres,
-        setGrams,
+        setScoops,
         setProduct,
         setAmount
       }}
