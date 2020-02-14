@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "../styles/Inputs";
-import { Row } from "../styles/Grid";
 import { MyText } from "../styles/Text";
+import { View } from "react-native";
 
 interface Props {
   placeholder: string;
@@ -20,17 +20,17 @@ export const NumericValueInput = (props: Props) => {
   };
 
   return (
-    <Row alignItems="center">
+    <View>
+      <MyText bold fontSize={2} marginBottom={2}>
+        {label}
+      </MyText>
       <Input
         onChangeText={onChange}
         value={value}
         keyboardType="numeric"
         placeholder={placeholder}
       />
-      <MyText bold fontSize={3} marginLeft={10}>
-        {label}
-      </MyText>
-    </Row>
+    </View>
   );
 };
 

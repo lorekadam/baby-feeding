@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import * as Facebook from "expo-facebook";
 import { MyText } from "../../styles/Text";
-import { colors } from "../../styles/colors";
+import { theme } from "../../styles/colors";
 import { MyButton } from "../../styles/Buttons";
 import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase";
@@ -32,10 +32,12 @@ export const FacebookSignInService = () => {
   return (
     <MyButton onPress={logInFacebook}>
       <Row>
-        <MyText color={colors.main} marginRight={10}>
-          Log in with facebook
-        </MyText>
-        <AntDesign color={colors.main} name="facebook-square" size={22} />
+        <MyText marginRight={10}>Log in with facebook</MyText>
+        <AntDesign
+          color={theme.Account.main}
+          name="facebook-square"
+          size={22}
+        />
       </Row>
     </MyButton>
   );

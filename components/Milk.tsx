@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { SvgCss } from "react-native-svg";
-import { CenteredView } from "../styles/Views";
+import { CenteredView, ViewFlex } from "../styles/Views";
 import MilkType from "./MilkType";
 import { FeedingContext } from "../contexts/FeedingContext";
 import NumericValueInput from "./NumericValueInput";
@@ -13,8 +13,11 @@ import { FeedingSave } from "../types";
 import { theme } from "../styles/colors";
 import { MILK_SCREEN } from "../screens/types";
 import dayjs from "dayjs";
+import { LayoutChangeEvent, Keyboard } from "react-native";
 
 export const Milk = () => {
+  const [height, setHeight] = useState(0);
+  const [isKeyboard, setIsKeyboard] = useState(false);
   const feedingContext = useContext(FeedingContext);
   const {
     milkType,
@@ -26,6 +29,19 @@ export const Milk = () => {
     setFeedingLog
   } = feedingContext;
 
+  useEffect(() => {
+    const showListener = Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboard(true);
+    });
+    const hideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboard(false);
+    });
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
+
   const saveLog = () => {
     const data: FeedingSave = {
       dateStart: dayjs().format("DD-MM-YYYY"),
@@ -35,18 +51,31 @@ export const Milk = () => {
     setFeedingLog(data);
   };
 
+  const bottleHeight = (e: LayoutChangeEvent) => {
+    const height = e.nativeEvent.layout.height;
+    setHeight(height - height * 0.2);
+  };
+
   return (
     <CenteredView>
-      <SvgCss xml={MilkSvg(theme[MILK_SCREEN].main)} width="60%" height="60%" />
-      <MilkType type={milkType} setMilkType={setMilkType} />
-      {milkType && (
-        <React.Fragment>
+      <ViewFlex onLayout={bottleHeight}>
+        <CenteredView>
+          <SvgCss
+            xml={MilkSvg(theme[MILK_SCREEN].main)}
+            width={height}
+            height={height}
+          />
+        </CenteredView>
+      </ViewFlex>
+      <ViewFlex>
+        <MilkType type={milkType} setMilkType={setMilkType} />
+        {milkType && (
           <Row gutters>
             <Col gutters>
               <NumericValueInput
                 value={mililitres}
                 setValue={setMililitres}
-                label="ml"
+                label="Mililitres"
                 placeholder="Mililitres..."
               />
             </Col>
@@ -55,13 +84,15 @@ export const Milk = () => {
                 <NumericValueInput
                   value={scoops}
                   setValue={setScoops}
-                  label="scoops"
+                  label="Scoops"
                   placeholder="scoops..."
                 />
               </Col>
             )}
           </Row>
-          {mililitres && (
+        )}
+        {isKeyboard === false && mililitres !== null && mililitres.length > 0 && (
+          <Row justifyContent="center">
             <MyButton round onPress={saveLog}>
               <MaterialIcons
                 name="add"
@@ -69,9 +100,9 @@ export const Milk = () => {
                 size={40}
               />
             </MyButton>
-          )}
-        </React.Fragment>
-      )}
+          </Row>
+        )}
+      </ViewFlex>
     </CenteredView>
   );
 };

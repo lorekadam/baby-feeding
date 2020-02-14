@@ -104,6 +104,8 @@ const FeedingProvider = (props: HocProps) => {
       } else {
         draft.toSend.push(feeding);
       }
+      draft.mililitres = null;
+      draft.scoops = null;
     });
     addFeedingAPI(feeding);
   };

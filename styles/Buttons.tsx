@@ -1,6 +1,5 @@
 import styled from "styled-components/native";
 import { APP_RADIUS } from "../globals";
-import { colors } from "./colors";
 import { Theme } from "../types";
 
 interface Props extends Theme {

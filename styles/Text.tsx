@@ -1,5 +1,4 @@
 import styled from "styled-components/native";
-import { colors } from "./colors";
 import { heightPtoDP as hp } from "../utils";
 import { Theme } from "../types";
 

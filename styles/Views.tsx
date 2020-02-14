@@ -6,3 +6,7 @@ export const CenteredView = styled.View`
   align-items: center;
   flex: 1;
 `;
+
+export const ViewFlex = styled.View`
+  flex: 1;
+`;

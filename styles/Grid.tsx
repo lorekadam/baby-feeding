@@ -7,6 +7,7 @@ interface Props {
   flex?: number;
   gutters?: boolean;
   gutterBottom?: boolean;
+  marginBottom?: number;
 }
 
 export const Aligment = styled.View`
@@ -20,6 +21,8 @@ export const Row = styled(Aligment)`
   display: flex;
   flex-direction: row;
   ${(props: Props) => props.gutters && `margin:0 -${APP_GUTTER}px`};
+  ${(props: Props) =>
+    props.marginBottom && `margin-bottom: ${props.marginBottom}`}
 `;
 
 export const RowColumn = styled(Aligment)`

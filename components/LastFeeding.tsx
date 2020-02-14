@@ -25,9 +25,9 @@ export const LastFeeding = (props: Props) => {
         </MyText>
       )}
       {(last.type === FORMULA_MILK || last.type === BREAST_MILK) && (
-        <MyText marginBottom={20} textAlign="center" bold fontSize={1.8}>
-          from bottle. It was {last.mililitres}ml{" "}
-          {last.grams && `, ${last.grams}g`} of{" "}
+        <MyText marginBottom={20} textAlign="center" bold fontSize={1.7}>
+          from bottle. It was {last.mililitres}ml
+          {last.scoops && `, ${last.scoops}scoops`} of{" "}
           {last.milkType.toLowerCase().replace(/_/g, " ")}
         </MyText>
       )}
