@@ -1,10 +1,3 @@
-export const bannerID = __DEV__
-  ? "ca-app-pub-3940256099942544/6300978111"
-  : "ca-app-pub-4605316137256745/5795847812";
-export const fullAdID = __DEV__
-  ? "ca-app-pub-3940256099942544/1033173712"
-  : "ca-app-pub-4605316137256745/5134987352";
-
 export const APP_GUTTER = 5;
 export const APP_RADIUS = 20;
 export const BREAST_SCALE = 0.9;
