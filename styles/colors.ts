@@ -8,7 +8,8 @@ export const colors = {
   breastInside: "#db9020",
   breastShadow: "#b27b7d",
   breastInsideShadow: "#b27218",
-  error: "#e02c35"
+  error: "#e02c35",
+  gray: "#bbbbbb"
 };
 
 export const theme = {

@@ -35,3 +35,14 @@ export const MyButton = styled.TouchableOpacity`
   ${(props: Props) => props.left && `left: ${props.left};`}
   z-index: 1;
 `;
+
+export const Pill = styled.TouchableOpacity`
+  border-radius: ${APP_RADIUS};
+  padding: 3px 12px;
+  background-color: ${(props: Props) => props.theme.main};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 5px;
+`;

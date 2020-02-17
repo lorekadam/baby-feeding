@@ -3,7 +3,7 @@ import { SvgCss } from "react-native-svg";
 import { CenteredView, ViewFlex } from "../styles/Views";
 import MilkType from "./MilkType";
 import { FeedingContext } from "../contexts/FeedingContext";
-import NumericValueInput from "./NumericValueInput";
+import ValueInput from "./ValueInput";
 import { FORMULA_MILK } from "../globals";
 import { Row, Col } from "../styles/Grid";
 import { MilkSvg } from "./BarIcons/Icons";
@@ -72,20 +72,22 @@ export const Milk = () => {
         {milkType && (
           <Row gutters>
             <Col gutters>
-              <NumericValueInput
+              <ValueInput
                 value={mililitres}
                 setValue={setMililitres}
                 label="Mililitres"
                 placeholder="Mililitres..."
+                numeric={true}
               />
             </Col>
             {milkType === FORMULA_MILK && (
               <Col gutters>
-                <NumericValueInput
+                <ValueInput
                   value={scoops}
                   setValue={setScoops}
                   label="Scoops"
                   placeholder="scoops..."
+                  numeric={true}
                 />
               </Col>
             )}

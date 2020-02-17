@@ -47,3 +47,10 @@ export interface Theme {
 export type Partial<T> = {
   [P in keyof T]?: T[P];
 };
+
+type SvgCall = (color: string) => string;
+
+export interface FoodIcon {
+  svg: SvgCall;
+  type: string;
+}

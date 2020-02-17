@@ -5,33 +5,40 @@ import { View } from "react-native";
 
 interface Props {
   placeholder: string;
-  label: string;
+  label?: string;
   value: string;
   setValue(value: string): void;
+  numeric?: boolean;
 }
 
-export const NumericValueInput = (props: Props) => {
-  const { placeholder, label, value, setValue } = props;
+export const ValueInput = (props: Props) => {
+  const { placeholder, label, value, setValue, numeric } = props;
 
   const onChange = (text: string) => {
-    if (/^[0-9]+$/g.test(text) || text.length === 0) {
+    if (numeric) {
+      if (/^[0-9]+$/g.test(text) || text.length === 0) {
+        setValue(text);
+      }
+    } else {
       setValue(text);
     }
   };
 
   return (
     <View>
-      <MyText bold fontSize={2} marginBottom={2}>
-        {label}
-      </MyText>
+      {label && (
+        <MyText bold fontSize={2} marginBottom={2}>
+          {label}
+        </MyText>
+      )}
       <Input
         onChangeText={onChange}
         value={value}
-        keyboardType="numeric"
+        keyboardType={numeric ? "numeric" : "default"}
         placeholder={placeholder}
       />
     </View>
   );
 };
 
-export default NumericValueInput;
+export default ValueInput;
