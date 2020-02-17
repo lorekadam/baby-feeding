@@ -27,7 +27,7 @@ const TabNavigator = createMaterialTopTabNavigator(
     [types.HISTORY_SCREEN]: HistoryScreen
   },
   {
-    initialRouteName: types.MILK_SCREEN,
+    initialRouteName: types.FOOD_SCREEN,
     tabBarPosition: "bottom",
     tabBarComponent: TabBarComponent,
     defaultNavigationOptions: ({ navigation }) => ({
