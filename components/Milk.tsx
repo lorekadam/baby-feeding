@@ -63,7 +63,7 @@ export const Milk = () => {
           <SvgCss
             xml={MilkSvg(theme[MILK_SCREEN].main)}
             width={height}
-            height={height}
+            height={300}
           />
         </CenteredView>
       </ViewFlex>

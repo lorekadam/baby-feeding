@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CenteredView } from "../styles/Views";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MyButton } from "../styles/Buttons";
-import { Row } from "../styles/Grid";
+import { Row, Col } from "../styles/Grid";
 import { theme } from "../styles/colors";
 import { FOOD_SCREEN } from "../screens/types";
 import {
@@ -148,22 +148,34 @@ export const Food = () => {
           ))}
         </Row>
       ))}
-      <Row alignItems="center">
-        <ValueInput placeholder="Other..." value={other} setValue={setOther} />
-        <MyButton onPress={addOtherFood}>
+      <Row alignItems="center" justifyContent="space-between" marginBottom={10}>
+        <Col>
+          <ValueInput
+            placeholder="Other..."
+            value={other}
+            setValue={setOther}
+          />
+        </Col>
+        <MyButton onPress={addOtherFood} m={0} marginLeft={5}>
           <MyText>Add other</MyText>
         </MyButton>
       </Row>
-      <Row>
+      <Row flexWrap="wrap" gutters={false}>
         {foodElements.map(food => (
           <FoodElement key={food} name={food} onPress={removeFood} />
         ))}
       </Row>
-      <Row justifyContent="center">
-        <MyButton round onPress={saveLog}>
-          <MaterialIcons name="add" color={theme[FOOD_SCREEN].font} size={40} />
-        </MyButton>
-      </Row>
+      {foodElements.length > 0 && (
+        <Row justifyContent="center">
+          <MyButton round onPress={saveLog}>
+            <MaterialIcons
+              name="add"
+              color={theme[FOOD_SCREEN].font}
+              size={40}
+            />
+          </MyButton>
+        </Row>
+      )}
     </CenteredView>
   );
 };

@@ -6,6 +6,7 @@ interface Props extends Theme {}
 
 export const Input = styled.TextInput`
   border: ${(props: Props) => `3px solid ${props.theme.main}`};
-  padding: 5px 10px;
+  padding: 2px 10px;
   border-radius: ${APP_RADIUS};
+  width: 100%;
 `;

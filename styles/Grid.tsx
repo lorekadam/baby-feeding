@@ -4,6 +4,7 @@ import { APP_GUTTER } from "../globals";
 interface Props {
   alignItems?: string;
   justifyContent?: string;
+  flexWrap?: string;
   flex?: number;
   gutters?: boolean;
   gutterBottom?: boolean;
@@ -15,6 +16,7 @@ export const Aligment = styled.View`
   ${(props: Props) =>
     props.justifyContent && `justify-content:${props.justifyContent}`};
   ${(props: Props) => props.flex && `flex:${props.flex}`};
+  ${(props: Props) => props.flexWrap && `flex-wrap:${props.flexWrap}`};
 `;
 
 export const Row = styled(Aligment)`

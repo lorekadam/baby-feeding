@@ -12,10 +12,16 @@ interface Props extends Theme {
   right?: number;
   bottom?: number;
   left?: number;
+  m?: number;
+  marginTop?: number;
+  marginRight?: number;
+  marginBottom?: number;
+  marginLeft?: number;
 }
 
 export const MyButton = styled.TouchableOpacity`
-  margin: 20px;
+  margin: ${(props: Props) =>
+    props.m !== undefined ? `${props.m}px` : `20px`};
   border: ${(props: Props) =>
     `${props.small ? 2 : 3}px solid ${
       props.borderColor ? props.borderColor : props.theme.main
@@ -33,16 +39,23 @@ export const MyButton = styled.TouchableOpacity`
   ${(props: Props) => props.right && `right: ${props.right};`}
   ${(props: Props) => props.bottom && `bottom: ${props.bottom};`}
   ${(props: Props) => props.left && `left: ${props.left};`}
+  ${(props: Props) => props.marginTop && `margin-top: ${props.marginTop}`}
+    ${(props: Props) =>
+      props.marginRight && `margin-right: ${props.marginRight}`}
+  ${(props: Props) =>
+    props.marginBottom && `margin-bottom: ${props.marginBottom}`}
+    ${(props: Props) => props.marginLeft && `margin-left: ${props.marginLeft}`}
   z-index: 1;
 `;
 
 export const Pill = styled.TouchableOpacity`
   border-radius: ${APP_RADIUS};
-  padding: 3px 12px;
+  padding: 3px 8px;
   background-color: ${(props: Props) => props.theme.main};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 2px;
+  margin-bottom: 2px;
 `;

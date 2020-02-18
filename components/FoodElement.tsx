@@ -15,7 +15,7 @@ export const FoodElement = (props: Props) => {
   };
   return (
     <Pill onPress={onPress}>
-      <MyText fontSize={1.8} color={colors.white} marginRight={5}>
+      <MyText fontSize={1.6} color={colors.white} marginRight={5}>
         {props.name}
       </MyText>
       <MaterialIcons name="close" color={colors.white} />
