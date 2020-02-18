@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { CenteredView } from "../styles/Views";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MyButton } from "../styles/Buttons";
@@ -37,14 +37,17 @@ import {
   TURKEY,
   RABBIT,
   FISH,
-  EGG
+  EGG,
+  FOOD
 } from "../globals";
 import { useImmer } from "use-immer";
-import { FoodIcon as FoodIconType } from "../types";
+import { FoodIcon as FoodIconType, Feeding } from "../types";
 import FoodIcon from "./FoodIcon";
 import ValueInput from "./ValueInput";
 import { MyText } from "../styles/Text";
 import FoodElement from "./FoodElement";
+import { FeedingContext, initialFeedingData } from "../contexts/FeedingContext";
+import dayjs from "dayjs";
 
 const fruits: FoodIconType[] = [
   { svg: AppleSvg, type: APPLE },
@@ -93,12 +96,24 @@ const initialFood: Food = {
 };
 
 export const Food = () => {
+  const feedingContext = useContext(FeedingContext);
   const [food, updateFood] = useImmer(() => initialFood);
   const [foodElements, updateFoodElements] = useImmer(() => []);
   const [other, setOther] = useState("");
+  const { setFeedingLog } = feedingContext;
 
   const saveLog = () => {
-    console.log("save");
+    const data: Feeding = {
+      ...initialFeedingData,
+      dateStart: dayjs().format("DD-MM-YYYY"),
+      timeStart: dayjs().format("HH:mm:ss"),
+      type: FOOD,
+      products: foodElements
+    };
+    setFeedingLog(data);
+    updateFood(() => initialFood);
+    updateFoodElements(() => []);
+    setOther("");
   };
 
   const toggleFood = (type: string) => {

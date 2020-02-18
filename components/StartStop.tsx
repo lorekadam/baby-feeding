@@ -7,7 +7,7 @@ import { MyButton } from "../styles/Buttons";
 import { colors } from "../styles/colors";
 import Timer from "./Timer";
 import { FeedingContext } from "../contexts/FeedingContext";
-import { FeedingSave } from "../types";
+import { Feeding } from "../types";
 import { returnTimeString } from "../utils";
 import { TimerContext } from "../contexts/TimerContext";
 
@@ -32,7 +32,7 @@ export const StartStop = (props: Props) => {
   } = useContext(TimerContext);
 
   const saveLog = () => {
-    const data: FeedingSave = {
+    const data: Feeding = {
       dateStart,
       timeStart,
       timeEnd: dayjs().format("HH:mm:ss"),

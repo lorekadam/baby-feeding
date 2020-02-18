@@ -4,6 +4,7 @@ import { Feeding } from "../types";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { BREAST, FORMULA_MILK, BREAST_MILK } from "../globals";
+import { Row } from "../styles/Grid";
 
 dayjs.extend(customParseFormat);
 
@@ -14,7 +15,7 @@ interface Props {
 export const LastFeeding = (props: Props) => {
   const { last } = props;
   return (
-    <React.Fragment>
+    <Row gutters={false} marginBottom={10}>
       <MyText textAlign="center" bold fontSize={1.8}>
         Last feeding was at {dayjs(last.timeStart, "HH:mm:ss").format("HH:mm")}{" "}
       </MyText>
@@ -31,7 +32,7 @@ export const LastFeeding = (props: Props) => {
           {last.milkType.toLowerCase().replace(/_/g, " ")}
         </MyText>
       )}
-    </React.Fragment>
+    </Row>
   );
 };
 

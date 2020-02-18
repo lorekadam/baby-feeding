@@ -21,8 +21,7 @@ export interface Feeding {
   milkType?: MilkType;
   mililitres?: string;
   scoops?: string;
-  product?: string;
-  amount?: string;
+  products?: string[];
 }
 
 export interface FeedingItem {
@@ -31,14 +30,6 @@ export interface FeedingItem {
 }
 
 export type MilkType = "FORMULA_MILK" | "BREAST_MILK";
-
-export interface FeedingSave {
-  dateStart: string;
-  timeStart: string;
-  type: string;
-  timeEnd?: string;
-  duration?: string;
-}
 
 export interface Theme {
   theme: ColorScheme;
