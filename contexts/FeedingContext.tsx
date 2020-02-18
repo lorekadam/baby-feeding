@@ -7,6 +7,8 @@ import {
   findIndexToRemove
 } from "../utils";
 import { addFeedingAPI, removeFeedingAPI, userIsLogged } from "../firebase/api";
+import { AdMobInterstitial } from "expo-ads-admob";
+import { fullAdID } from "../keys";
 
 interface State {
   both?: boolean;
@@ -36,12 +38,12 @@ export const initialFeedingData = {
   side: null,
   milkType: null,
   mililitres: null,
-  scoops: null
+  scoops: null,
+  products: []
 };
 
 const initialState: State = {
   ...initialFeedingData,
-  products: [],
   feedings: [],
   toSend: [],
   toRemove: []
@@ -66,6 +68,15 @@ const FeedingProvider = (props: HocProps) => {
   }, []);
 
   useEffect(() => {
+    AdMobInterstitial.setAdUnitID(fullAdID);
+  }, []);
+
+  const showFullAd = async () => {
+    await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
+    await AdMobInterstitial.showAdAsync();
+  };
+
+  useEffect(() => {
     const update = async () => {
       await updateLocalStorage("feedingStorage", state);
     };
@@ -84,15 +95,15 @@ const FeedingProvider = (props: HocProps) => {
     });
   };
 
-  const setFeedingLog: State["setFeedingLog"] = feedingSave => {
+  const setFeedingLog: State["setFeedingLog"] = async feedingSave => {
     const { side, both, milkType, mililitres, scoops, products } = state;
     const feeding: Feeding = {
-      side,
-      both,
-      milkType,
-      mililitres,
-      scoops,
-      products,
+      side: side !== undefined ? side : null,
+      both: both !== undefined ? both : null,
+      milkType: milkType !== undefined ? milkType : null,
+      mililitres: mililitres !== undefined ? mililitres : null,
+      scoops: scoops !== undefined ? scoops : null,
+      products: products !== undefined ? products : null,
       ...feedingSave
     };
     updateState((draft: State) => {
@@ -109,6 +120,7 @@ const FeedingProvider = (props: HocProps) => {
       draft.milkType = null;
     });
     addFeedingAPI(feeding);
+    await showFullAd();
   };
 
   const removeFeedingLog: State["removeFeedingLog"] = index => {

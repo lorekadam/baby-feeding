@@ -38,12 +38,12 @@ export const theme = {
     tabBackground: "#eaa1a5"
   },
   [types.FOOD_SCREEN]: {
-    main: "#D24040",
-    font: "#D24040",
+    main: "#792929",
+    font: "#792929",
     onMainFont: "#ffffff",
     tabIcon: "#313030",
-    tabIconActive: "#D24040",
-    tabBackground: "#D24040"
+    tabIconActive: "#792929",
+    tabBackground: "#792929"
   },
   [types.HISTORY_SCREEN]: {
     main: "#3BC485",

@@ -4,8 +4,6 @@ import "dayjs/locale/en-gb";
 import { UserProvider } from "./contexts/UserContext";
 import { FeedingProvider } from "./contexts/FeedingContext";
 import Main from "./components/Main";
-
-import { YellowBox } from "react-native";
 import { TimerProvider } from "./contexts/TimerContext";
 
 interface State {
@@ -16,13 +14,6 @@ const App = () => {
   const [fontLoaded, setFontLoaded] = useState<State["fontLoaded"]>(false);
 
   useEffect(() => {
-    YellowBox.ignoreWarnings(["Setting a timer"]);
-    const _console = { ...console };
-    console.warn = message => {
-      if (message.indexOf("Setting a timer") <= -1) {
-        _console.warn(message);
-      }
-    };
     const loadFont = async () => {
       await Font.loadAsync({
         nunito: require("./assets/fonts/Nunito-Regular.ttf"),

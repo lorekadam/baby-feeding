@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import NetInfo from "@react-native-community/netinfo";
+import React, { useEffect, useContext } from "react";
 import firebase from "firebase";
 import "@firebase/firestore";
 import AppNavigation from "../Navigation";
-import { AdMobBanner, AdMobInterstitial } from "expo-ads-admob";
 import "dayjs/locale/en-gb";
 import { UserContext } from "../contexts/UserContext";
 import {
@@ -14,31 +12,12 @@ import {
 } from "../firebase/api";
 import { FeedingContext } from "../contexts/FeedingContext";
 import { Feeding } from "../types";
-import { bannerID, fullAdID } from "../globals";
 import { firebaseConfig } from "../keys";
-
-interface State {
-  connection: boolean;
-}
 
 const Main = () => {
   const userContext = useContext(UserContext);
   const feedingContext = useContext(FeedingContext);
   const { user } = userContext;
-
-  const [connection, setConnection] = useState<State["connection"]>(false);
-
-  const bannerError = e => {
-    console.log(e);
-  };
-
-  // watch connection
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setConnection(state.isConnected);
-    });
-    return unsubscribe();
-  }, []);
 
   //firebase init
   useEffect(() => {
@@ -88,32 +67,7 @@ const Main = () => {
     }
   }, [user.uid]);
 
-  // full ad init
-  // useEffect(() => {
-  //   AdMobInterstitial.setAdUnitID(fullAdID);
-  //   AdMobInterstitial.addEventListener("interstitialDidClose", () => {
-  //     console.log("closed ad");
-  //   });
-  // }, []);
-
-  // full ad open
-  // useEffect(() => {
-  //   const showFullAd = async () => {
-  //     await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
-  //     await AdMobInterstitial.showAdAsync();
-  //   };
-  //   showFullAd();
-  // }, []);
-
   return <AppNavigation />;
 };
-// {connection && (
-//   <AdMobBanner
-//     bannerSize="smartBannerPortrait"
-//     adUnitID={bannerID}
-//     servePersonalizedAds={true}
-//     onDidFailToReceiveAdWithError={bannerError}
-//   />
-// )}
 
 export default Main;
