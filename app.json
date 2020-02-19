@@ -14,7 +14,7 @@
       "backgroundColor": "#eaa1a5"
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 7,
       "package": "adam.lorek.baby.feeding",
       "googleServicesFile": "./google-services.json",
       "config": {

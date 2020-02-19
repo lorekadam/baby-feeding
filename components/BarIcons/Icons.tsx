@@ -87,6 +87,7 @@ export const UserSvg = (color: string) => `
   </svg>
 `;
 
+// <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 // https://www.flaticon.com/free-icon/schedule_2474295?term=list&page=1&position=8
 
 export const HistorySvg = (color: string) => `
