@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "BabyFeeding",
+    "name": "Baby Feeding",
     "slug": "baby-feeding",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -14,7 +14,7 @@
       "backgroundColor": "#eaa1a5"
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "package": "adam.lorek.baby.feeding",
       "googleServicesFile": "./google-services.json",
       "config": {
