@@ -16,7 +16,7 @@
     "expo-facebook": "~8.0.0",
     "expo-google-sign-in": "~8.0.0",
     "firebase": "^7.7.0",
-    "immer": "^5.3.2",
+    "immer": "^9.0.6",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
